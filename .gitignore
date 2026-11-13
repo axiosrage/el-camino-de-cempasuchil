@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Temporales del editor y registros
+*.tmp
+*.log
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

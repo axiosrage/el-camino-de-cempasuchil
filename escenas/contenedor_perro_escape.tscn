@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://cb53r2b4wdhie"]
+
+[ext_resource type="PackedScene" uid="uid://dbcxvxuskj0xd" path="res://escenas/perro.tscn" id="1_a1dp4"]
+[ext_resource type="PackedScene" uid="uid://bcfqir21ieesv" path="res://escenas/cuerda.tscn" id="2_rixs7"]
+[ext_resource type="PackedScene" uid="uid://c5eo08hbpberj" path="res://escenas/plataforma_tronco.tscn" id="3_ecxy4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6865"]
+size = Vector2(26, 4)
+
+[node name="ContenedorPerroEscape" type="Node2D" unique_id=196573119]
+
+[node name="Perro" parent="." unique_id=1319368847 instance=ExtResource("1_a1dp4")]
+position = Vector2(37, 0)
+collision_layer = 512
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="." unique_id=812014235]
+position = Vector2(46, 0)
+node_a = NodePath("../Perro")
+node_b = NodePath("../cuerda")
+
+[node name="cuerda" parent="." unique_id=1074312014 instance=ExtResource("2_rixs7")]
+position = Vector2(38, 0)
+rotation = 1.5707964
+
+[node name="PinJoint2D" type="PinJoint2D" parent="." unique_id=1503298565]
+position = Vector2(30, 0)
+node_a = NodePath("../cuerda")
+node_b = NodePath("../cuerda2")
+
+[node name="cuerda2" parent="." unique_id=228155277 instance=ExtResource("2_rixs7")]
+position = Vector2(22, 0)
+rotation = 1.5707964
+
+[node name="PinJoint2D3" type="PinJoint2D" parent="." unique_id=442790627]
+position = Vector2(14, 0)
+node_a = NodePath("../cuerda2")
+node_b = NodePath("../PlataformaTronco")
+
+[node name="PlataformaTronco" parent="." unique_id=1160956044 instance=ExtResource("3_ecxy4")]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1069687150]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=729939135]
+position = Vector2(-1, -3)
+shape = SubResource("RectangleShape2D_f6865")
+
+[connection signal="body_entered" from="Area2D" to="Perro" method="_on_area_2d_body_entered"]

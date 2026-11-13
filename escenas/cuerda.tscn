@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://bcfqir21ieesv"]
+
+[ext_resource type="Script" uid="uid://il61jdfyrh26" path="res://escenas/cuerda.gd" id="1_pnf5i"]
+[ext_resource type="Texture2D" uid="uid://ckht42e7ljfqe" path="res://assets/items/cuerda.png" id="1_ykprx"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pnf5i"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6865"]
+size = Vector2(2, 16)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f6865"]
+radius = 1.0
+height = 16.0
+
+[sub_resource type="Gradient" id="Gradient_pnf5i"]
+offsets = PackedFloat32Array(0, 0.6032609)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f6865"]
+gradient = SubResource("Gradient_pnf5i")
+fill = 1
+fill_from = Vector2(0.50427353, 0.491453)
+fill_to = Vector2(0, 0.99572647)
+
+[node name="cuerda" type="RigidBody2D" unique_id=1074312014]
+light_mask = 8
+collision_layer = 256
+physics_material_override = SubResource("PhysicsMaterial_pnf5i")
+script = ExtResource("1_pnf5i")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=292484305]
+collision_layer = 256
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=886885403]
+shape = SubResource("RectangleShape2D_f6865")
+debug_color = Color(0.07222173, 0.6281277, 0.47864097, 0.41960785)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=257994480]
+shape = SubResource("CapsuleShape2D_f6865")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1171253000]
+light_mask = 8
+texture = ExtResource("1_ykprx")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1589485659]
+range_item_cull_mask = 8
+texture = SubResource("GradientTexture2D_f6865")
+
+[node name="Timer" type="Timer" parent="." unique_id=16382351]
+wait_time = 20.0
+autostart = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

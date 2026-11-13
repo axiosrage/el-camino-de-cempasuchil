@@ -1,0 +1,88 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://escenas/hud.gd" id="1_hud"]
+[ext_resource type="Texture2D" path="res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart full.png" id="2_lleno"]
+[ext_resource type="Texture2D" path="res://assets/hud/corazon_medio.png" id="3_medio"]
+[ext_resource type="Texture2D" path="res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart empty.png" id="4_vacio"]
+[ext_resource type="Texture2D" path="res://assets/items/item-hade.png" id="5_jade"]
+[ext_resource type="FontFile" path="res://assets/ui/fuentes/PixelifySans.ttf" id="6_fuente"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Contenido" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Contenido"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 15.0
+offset_right = 390.0
+offset_bottom = 120.0
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Corazones" type="HBoxContainer" parent="Contenido/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 3
+
+[node name="Corazon1" type="TextureRect" parent="Contenido/VBox/Corazones"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(39, 33)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_lleno")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Corazon2" type="TextureRect" parent="Contenido/VBox/Corazones"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(39, 33)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_lleno")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Corazon3" type="TextureRect" parent="Contenido/VBox/Corazones"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(39, 33)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_lleno")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Jades" type="HBoxContainer" parent="Contenido/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="IconoJade" type="TextureRect" parent="Contenido/VBox/Jades"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(33, 45)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_jade")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CantidadJades" type="Label" parent="Contenido/VBox/Jades"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 26
+text = "x 0"
+vertical_alignment = 1

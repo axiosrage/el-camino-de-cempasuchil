@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://c7vungicy5knx"]
+
+[ext_resource type="Texture2D" uid="uid://bhyoakiytrusr" path="res://assets/items/particula-cruz.png" id="1_6xjly"]
+[ext_resource type="Script" uid="uid://cmdarq3s11leo" path="res://escenas/particula_cruz.gd" id="2_ckjfo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rlpx1"]
+size = Vector2(2, 2)
+
+[node name="ParticulaCruz" type="CharacterBody2D" unique_id=1725098651]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource("2_ckjfo")
+
+[node name="ParticulaCruz" type="Sprite2D" parent="." unique_id=1001747750]
+texture = ExtResource("1_6xjly")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=397830885]
+shape = SubResource("RectangleShape2D_rlpx1")

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dqjjt56m77p4b"]
+
+[ext_resource type="PackedScene" uid="uid://bcfqir21ieesv" path="res://escenas/cuerda.tscn" id="1_1pghk"]
+[ext_resource type="PackedScene" uid="uid://c13h8xm6p17tl" path="res://escenas/PiedraColgante.tscn" id="2_tkt2v"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_f6865"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6865"]
+size = Vector2(4, 4)
+
+[node name="ContenedorCuerda" type="Node2D" unique_id=885320966]
+
+[node name="soporte" type="StaticBody2D" parent="." unique_id=1178820678]
+physics_material_override = SubResource("PhysicsMaterial_f6865")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="soporte" unique_id=1663200074]
+shape = SubResource("RectangleShape2D_f6865")
+
+[node name="PinJoint2D5" type="PinJoint2D" parent="." unique_id=78869742]
+position = Vector2(0, 2)
+node_a = NodePath("../soporte")
+node_b = NodePath("../cuerda")
+
+[node name="cuerda" parent="." unique_id=1074312014 instance=ExtResource("1_1pghk")]
+position = Vector2(0, 10)
+
+[node name="PinJoint2D" type="PinJoint2D" parent="." unique_id=515782226]
+position = Vector2(0, 18)
+node_a = NodePath("../cuerda")
+node_b = NodePath("../cuerda2")
+
+[node name="cuerda2" parent="." unique_id=1156381213 instance=ExtResource("1_1pghk")]
+position = Vector2(0, 26)
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="." unique_id=392203269]
+position = Vector2(0, 34)
+node_a = NodePath("../cuerda2")
+node_b = NodePath("../cuerda3")
+
+[node name="cuerda3" parent="." unique_id=274575668 instance=ExtResource("1_1pghk")]
+position = Vector2(0, 42)
+
+[node name="PinJoint2D3" type="PinJoint2D" parent="." unique_id=613949879]
+position = Vector2(0, 50)
+node_a = NodePath("../cuerda3")
+node_b = NodePath("../cuerda4")
+
+[node name="cuerda4" parent="." unique_id=1001016177 instance=ExtResource("1_1pghk")]
+position = Vector2(0, 58)
+
+[node name="PinJoint2D4" type="PinJoint2D" parent="." unique_id=285075429]
+position = Vector2(0, 66)
+node_a = NodePath("../cuerda4")
+node_b = NodePath("../PiedraColgante")
+
+[node name="PiedraColgante" parent="." unique_id=1904516464 instance=ExtResource("2_tkt2v")]
+position = Vector2(0, 70)

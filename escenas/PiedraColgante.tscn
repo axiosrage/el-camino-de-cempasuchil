@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://c13h8xm6p17tl"]
+
+[ext_resource type="Script" uid="uid://bn35g2ct4txgd" path="res://escenas/piedra_colgante.gd" id="1_oborj"]
+[ext_resource type="Texture2D" uid="uid://s7mynseqgavo" path="res://assets/items/piedra-conlgante.png" id="1_opr00"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_opr00"]
+friction = 0.0
+
+[sub_resource type="Gradient" id="Gradient_ykprx"]
+offsets = PackedFloat32Array(0, 0.6032609)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_oborj"]
+gradient = SubResource("Gradient_ykprx")
+fill = 1
+fill_from = Vector2(0.50427353, 0.491453)
+fill_to = Vector2(0, 0.99572647)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6865"]
+size = Vector2(16, 3)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s7a1t"]
+radius = 12.0
+height = 40.0
+
+[node name="PiedraColgante" type="RigidBody2D" unique_id=1904516464]
+light_mask = 8
+collision_mask = 259
+mass = 15.0
+physics_material_override = SubResource("PhysicsMaterial_opr00")
+linear_velocity = Vector2(50, 0)
+linear_damp = 0.5
+angular_damp = 0.5
+script = ExtResource("1_oborj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=301256515]
+light_mask = 8
+visibility_layer = 8
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_opr00")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=158730508]
+light_mask = 8
+position = Vector2(0, 2.000001)
+scale = Vector2(1.453125, 0.75)
+range_item_cull_mask = 8
+texture = SubResource("GradientTexture2D_oborj")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1456865464]
+position = Vector2(0, 4)
+collision_layer = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=454470578]
+position = Vector2(0, 17)
+shape = SubResource("RectangleShape2D_f6865")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1951442662]
+position = Vector2(0, 7)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_s7a1t")
+
+[node name="Timer" type="Timer" parent="." unique_id=918919861]
+wait_time = 20.0
+autostart = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

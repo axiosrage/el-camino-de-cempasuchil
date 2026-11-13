@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c5eo08hbpberj"]
+
+[ext_resource type="Texture2D" uid="uid://b8xeravo66oh" path="res://assets/items/plataforma-madera.png" id="1_td6cc"]
+[ext_resource type="Script" path="res://escenas/tronco_escape.gd" id="2_tronco"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_euhcb"]
+points = PackedVector2Array(12, 2, 13, 1, 13, -2, -14, -2, -14, 0, -12, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jinete"]
+size = Vector2(40, 30)
+
+[node name="PlataformaTronco" type="RigidBody2D" unique_id=1160956044]
+collision_mask = 129
+mass = 10.0
+linear_damp = 1.0
+angular_damp = 1.0
+script = ExtResource("2_tronco")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1985808871]
+texture = ExtResource("1_td6cc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=309586733]
+position = Vector2(-0.5, 2.5)
+shape = SubResource("ConvexPolygonShape2D_euhcb")
+
+[node name="ZonaJinete" type="Area2D" parent="." unique_id=1734910285]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaJinete" unique_id=1963927841]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_jinete")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://mo4jv0e1vqvn"]
+
+[ext_resource type="Texture2D" uid="uid://cux2eitxaftsa" path="res://assets/items/item-piedra.png" id="1_7ariy"]
+[ext_resource type="Script" uid="uid://dhn7ccf4wv2d" path="res://escenas/piedra.gd" id="1_atclt"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_piedra"]
+friction = 0.75
+bounce = 0.32
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7ariy"]
+radius = 4.0
+
+[node name="Piedra" type="RigidBody2D" unique_id=1950755286]
+collision_layer = 32
+collision_mask = 9
+mass = 0.8
+contact_monitor = true
+max_contacts_reported = 4
+linear_damp_mode = 1
+linear_damp = 0.0
+angular_damp_mode = 1
+angular_damp = 0.35
+physics_material_override = SubResource("PhysicsMaterial_piedra")
+script = ExtResource("1_atclt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1400268974]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_7ariy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1059883795]
+shape = SubResource("CircleShape2D_7ariy")
