@@ -1,8 +1,10 @@
-# El camino de Cenpasuchil
+# El camino de Cempasúchil
 
 Juego de plataformas 2D en pixel art desarrollado en **Godot 4.7**. El nivel transcurre
 en un paisaje inspirado en el Mictlán: plataformas, trampas, enemigos y agua que quita
 vidas.
+
+**Jugar en itch.io:** <https://axiosrage.itch.io/el-camino-de-cempaschil>
 
 ## Estado
 
@@ -56,10 +58,18 @@ Las partidas se guardan en `user://partidas/ranura_1.json`, `ranura_2.json` y
 `ranura_3.json`. Cada ranura guarda nivel, posición, vida, jades y checkpoint. Solo se
 escribe en la ranura activa.
 
-## Exportación web
+## Exportación
 
-El proyecto incluye un preset **Web** en `export_presets.cfg`. La exportación se genera
-en `exports/web/` (carpeta ignorada por git).
+`export_presets.cfg` incluye tres presets:
+
+| Preset | Plataforma | Salida |
+| --- | --- | --- |
+| `Web` | HTML5 | `exports/web/index.html` |
+| `Windows` | Windows Desktop (x86_64) | `exports/windows/ElCaminoDeCempasuchil.exe` |
+| `Linux` | Linux (x86_64) | `exports/linux/ElCaminoDeCempasuchil.x86_64` |
+
+Las exportaciones se generan en `exports/`, que está ignorada por git. Los builds
+publicados se suben a itch.io con `butler` en los canales `html5`, `windows` y `linux`.
 
 ## Créditos
 

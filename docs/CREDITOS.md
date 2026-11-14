@@ -2,7 +2,7 @@
 
 ## Proyecto
 
-- Diseño, programación y arte del juego: equipo de *El camino de Cenpasuchil*.
+- Diseño, programación y arte del juego: equipo de *El camino de Cempasúchil*.
 - Motor: [Godot Engine](https://godotengine.org/) 4.7 (licencia MIT).
 
 ## Recursos de terceros
