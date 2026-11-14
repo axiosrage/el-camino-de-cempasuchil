@@ -10,14 +10,16 @@ config_version=5
 
 [application]
 
-config/name="Mictlan"
+config/name="El camino de Cenpasuchil"
 run/main_scene="res://escenas/menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://b5sdaeie7aoq8"
 
 [autoload]
 
 EstadoJuego="*res://estado_juego.gd"
+Configuracion="*res://configuracion.gd"
+Sonidos="*res://sonidos.gd"
 
 [display]
 

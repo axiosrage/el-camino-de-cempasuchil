@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bsqy2snet0vek"
-path="res://.godot/imported/BoldPixels.png-2e4b1ce5c5c80f1f73e7cc000919409f.ctex"
+uid="uid://bo2n31lalskm4"
+path="res://.godot/imported/banner-cempasuchil.png-7281df4f3ad636f9cb2083954c923875.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/materiales/webfontkit-BoldPixels/BoldPixels.png"
-dest_files=["res://.godot/imported/BoldPixels.png-2e4b1ce5c5c80f1f73e7cc000919409f.ctex"]
+source_file="res://assets/icons/banner-cempasuchil.png"
+dest_files=["res://.godot/imported/banner-cempasuchil.png-7281df4f3ad636f9cb2083954c923875.ctex"]
 
 [params]
 

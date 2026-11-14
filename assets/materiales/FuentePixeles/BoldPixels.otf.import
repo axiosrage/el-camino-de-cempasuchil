@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bsqfpl2lt0dld"
-path="res://.godot/imported/boldpixels.woff-19921581b94ca10b550ebaa68f2d9a7e.fontdata"
+uid="uid://bdx0vvx08bpot"
+path="res://.godot/imported/BoldPixels.otf-4fa27e642d181cfeea285d50eaa0bea6.fontdata"
 
 [deps]
 
-source_file="res://assets/materiales/webfontkit-BoldPixels/boldpixels.woff"
-dest_files=["res://.godot/imported/boldpixels.woff-19921581b94ca10b550ebaa68f2d9a7e.fontdata"]
+source_file="res://assets/materiales/FuentePixeles/BoldPixels.otf"
+dest_files=["res://.godot/imported/BoldPixels.otf-4fa27e642d181cfeea285d50eaa0bea6.fontdata"]
 
 [params]
 

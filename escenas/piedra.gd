@@ -6,6 +6,8 @@ extends RigidBody2D
 
 var recta_activa: bool = false
 
+var _golpe_sonado: bool = false
+
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -13,6 +15,10 @@ func _ready() -> void:
 
 
 func _on_body_entered(_body: Node) -> void:
+	if not _golpe_sonado:
+		_golpe_sonado = true
+		Sonidos.reproducir_mundo("golpe_piedra", global_position, -3.0, 900.0)
+
 	# El tiro recto solo ignora la gravedad hasta el primer impacto.
 	# Al chocar con una pared vuelve a caer con física normal.
 	if recta_activa:

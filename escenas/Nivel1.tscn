@@ -477,6 +477,7 @@ tile_map_data = PackedByteArray("AABhAB0AAQAAAAAAAABgAB0AAQAAAAAAAABfAB0AAQAAAAA
 tile_set = SubResource("TileSet_rlpx1")
 
 [node name="Area2D" type="Area2D" parent="agua" unique_id=597354158]
+collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="agua/Area2D" unique_id=1171013568]
@@ -485,7 +486,7 @@ shape = SubResource("RectangleShape2D_f6865")
 
 [node name="Player" parent="." unique_id=1715088520 instance=ExtResource("2_0vnm1")]
 z_index = 1
-position = Vector2(3989, 435)
+position = Vector2(-258, 435)
 collision_mask = 141
 
 [node name="CharacterBody2D" parent="." unique_id=52342188 instance=ExtResource("7_eqxv5")]
@@ -561,7 +562,7 @@ collision_layer = 256
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaSpawnLagarto" unique_id=2032617281]
-position = Vector2(-34.02246, 63.180542)
+position = Vector2(200.97754, 66.18054)
 shape = SubResource("RectangleShape2D_rlpx1")
 
 [node name="Transicion" type="CanvasLayer" parent="." unique_id=1090357136]

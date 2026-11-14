@@ -54,6 +54,10 @@ func morir_en_agua() -> void:
 	EstadoJuego.castigar_agua()
 	vida_media = EstadoJuego.vida_media
 	vida_cambiada.emit(vida_media, corazones_max * 2)
+	if vida_media > 0:
+		# Si el agua consume el último corazón, el nivel reproduce
+		# GAME OVER al reiniciarse en lugar de encimar ambos sonidos.
+		Sonidos.reproducir_ui("perder_ahogarse", -3.0)
 	morir("agua")
 
 

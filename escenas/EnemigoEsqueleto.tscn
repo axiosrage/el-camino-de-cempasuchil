@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://2mya7r5yuqvd" path="res://escenas/enemigo_esqueleto.gd" id="1_kn2lo"]
 [ext_resource type="Texture2D" uid="uid://cjtxce7jx2rv3" path="res://assets/enemigos/esqueleto/Esqueleto_iddle.png" id="2_kn2lo"]
 [ext_resource type="Texture2D" uid="uid://y4did7nl5fub" path="res://assets/enemigos/esqueleto/esqueleto_desarme.png" id="3_t5om8"]
+[ext_resource type="AudioStreamMP3" path="res://assets/sonidos/pasos_esqueleto.mp3" id="4_pasos"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5om8"]
 size = Vector2(170, 1)
@@ -170,6 +171,14 @@ target_position = Vector2(0, 10)
 [node name="TiempoRearme" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="Pasos" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_pasos")
+volume_db = -12.0
+max_distance = 900.0
+
+[node name="TimerPasos" type="Timer" parent="."]
+wait_time = 0.4
 
 [connection signal="body_entered" from="AreaVision" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_exited" from="AreaVision" to="." method="_on_area_2d_body_exited"]

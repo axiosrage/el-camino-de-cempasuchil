@@ -36,4 +36,10 @@ func _on_reanudar_pressed() -> void:
 
 func _on_menu_pressed() -> void:
 	get_tree().paused = false
+
+	# Guardamos el checkpoint antes de abandonar el nivel.
+	var nivel := get_parent()
+	if nivel != null and nivel.has_method("guardar_partida_actual"):
+		nivel.guardar_partida_actual(true)
+
 	get_tree().change_scene_to_file("res://escenas/menu.tscn")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fessba7nukel"
-path="res://.godot/imported/boldpixels.svg-c68492c2408af86cfe7493546e5a5a5c.ctex"
+uid="uid://dgr83llpmudc4"
+path="res://.godot/imported/fondo.png-b3d37e8a1dfa99030df68cb0135c1612.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/materiales/webfontkit-BoldPixels/boldpixels.svg"
-dest_files=["res://.godot/imported/boldpixels.svg-c68492c2408af86cfe7493546e5a5a5c.ctex"]
+source_file="res://assets/hub/fondo.png"
+dest_files=["res://.godot/imported/fondo.png-b3d37e8a1dfa99030df68cb0135c1612.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

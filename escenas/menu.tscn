@@ -1,61 +1,181 @@
-[gd_scene format=3 uid="uid://b0ath21st44hp"]
+[gd_scene load_steps=14 format=3 uid="uid://b0ath21st44hp"]
 
-[ext_resource type="Texture2D" uid="uid://eqbiolnog02p" path="res://assets/fondo/menu.png" id="1_2owot"]
-[ext_resource type="Script" uid="uid://cye5ncyss0pl8" path="res://escenas/menu.gd" id="1_6cq3m"]
-[ext_resource type="Texture2D" uid="uid://bppkdgga3o644" path="res://assets/hub/boton-menu-jugar.png" id="2_6cq3m"]
-[ext_resource type="Texture2D" uid="uid://dajvwavwfjyyn" path="res://assets/hub/boton-menu-salir.png" id="3_5t3kx"]
-[ext_resource type="Texture2D" uid="uid://ync1rl2yu03s" path="res://assets/hub/Titulo.png" id="5_5t3kx"]
+[ext_resource type="Texture2D" path="res://assets/hub/fondo.png" id="1_fondo"]
+[ext_resource type="Texture2D" path="res://assets/hub/Titulo.png" id="2_titulo"]
+[ext_resource type="Texture2D" path="res://assets/hub/botones.png" id="3_botones"]
+[ext_resource type="FontFile" path="res://assets/materiales/FuentePixeles/BoldPixels.otf" id="4_fuente"]
+[ext_resource type="Script" path="res://escenas/menu.gd" id="5_menu"]
+[ext_resource type="PackedScene" path="res://escenas/opciones.tscn" id="6_opciones"]
+[ext_resource type="PackedScene" path="res://escenas/seleccion_partidas.tscn" id="7_seleccion"]
 
-[node name="Menu" type="Control" unique_id=276897218]
+[sub_resource type="AtlasTexture" id="Atlas_titulo"]
+atlas = ExtResource("2_titulo")
+region = Rect2(269, 0, 615, 184)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_continuar"]
+atlas = ExtResource("3_botones")
+region = Rect2(413, 188, 324, 67)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_nueva"]
+atlas = ExtResource("3_botones")
+region = Rect2(413, 265, 324, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_opciones"]
+atlas = ExtResource("3_botones")
+region = Rect2(423, 339, 305, 64)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_salir"]
+atlas = ExtResource("3_botones")
+region = Rect2(424, 413, 304, 64)
+filter_clip = true
+
+[sub_resource type="StyleBoxFlat" id="SBF_foco"]
+bg_color = Color(0.9686, 0.7882, 0.2824, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.9686, 0.7882, 0.2824, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_6cq3m")
+script = ExtResource("5_menu")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=983642185]
+[node name="Fondo" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_2owot")
+mouse_filter = 2
+texture = ExtResource("1_fondo")
+expand_mode = 1
+stretch_mode = 6
+texture_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1088741562]
+[node name="Titulo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -307.5
+offset_right = 307.5
+offset_bottom = 184.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = SubResource("Atlas_titulo")
+expand_mode = 1
+stretch_mode = 0
+texture_filter = 1
+
+[node name="Botones" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -169.0
-offset_top = -68.0
-offset_right = 169.0
-offset_bottom = 162.0
+offset_left = -162.0
+offset_top = -136.5
+offset_right = 162.0
+offset_bottom = 152.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 10
 
-[node name="jugar" type="Button" parent="VBoxContainer" unique_id=1089320970]
+[node name="Continuar" type="TextureButton" parent="Botones"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-icon = ExtResource("2_6cq3m")
-flat = true
+focus_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("Atlas_continuar")
+texture_hover = SubResource("Atlas_continuar")
+texture_pressed = SubResource("Atlas_continuar")
+texture_disabled = SubResource("Atlas_continuar")
+texture_focused = SubResource("Atlas_continuar")
 
-[node name="salir" type="Button" parent="VBoxContainer" unique_id=2093829837]
+[node name="NuevaPartida" type="TextureButton" parent="Botones"]
 layout_mode = 2
 size_flags_horizontal = 4
-offset_transform_enabled = true
-icon = ExtResource("3_5t3kx")
-flat = true
+focus_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("Atlas_nueva")
+texture_hover = SubResource("Atlas_nueva")
+texture_pressed = SubResource("Atlas_nueva")
+texture_disabled = SubResource("Atlas_nueva")
+texture_focused = SubResource("Atlas_nueva")
 
-[node name="FadeRect" type="ColorRect" parent="." unique_id=1463213823]
+[node name="Opciones" type="TextureButton" parent="Botones"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("Atlas_opciones")
+texture_hover = SubResource("Atlas_opciones")
+texture_pressed = SubResource("Atlas_opciones")
+texture_disabled = SubResource("Atlas_opciones")
+texture_focused = SubResource("Atlas_opciones")
+
+[node name="Salir" type="TextureButton" parent="Botones"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 2
+mouse_default_cursor_shape = 2
+texture_normal = SubResource("Atlas_salir")
+texture_hover = SubResource("Atlas_salir")
+texture_pressed = SubResource("Atlas_salir")
+texture_disabled = SubResource("Atlas_salir")
+texture_focused = SubResource("Atlas_salir")
+
+[node name="SinPartida" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = 164.0
+offset_right = 240.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 0.8)
+theme_override_fonts/font = ExtResource("4_fuente")
+theme_override_font_sizes/font_size = 14
+text = "NO HAY PARTIDA GUARDADA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Foco" type="Panel" parent="."]
 visible = false
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("SBF_foco")
+
+[node name="Opciones" parent="." instance=ExtResource("6_opciones")]
+visible = false
+
+[node name="SeleccionPartidas" parent="." instance=ExtResource("7_seleccion")]
+visible = false
+
+[node name="FadeRect" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,15 +183,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
-
-[node name="Titulo" type="Sprite2D" parent="." unique_id=931548298]
-position = Vector2(570, 324)
-scale = Vector2(0.9895833, 0.99691355)
-texture = ExtResource("5_5t3kx")
-
-[connection signal="mouse_entered" from="VBoxContainer/jugar" to="." method="_on_jugar_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/jugar" to="." method="_on_jugar_mouse_exited"]
-[connection signal="pressed" from="VBoxContainer/jugar" to="." method="_on_jugar_pressed"]
-[connection signal="mouse_entered" from="VBoxContainer/salir" to="." method="_on_salir_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/salir" to="." method="_on_salir_mouse_exited"]
-[connection signal="pressed" from="VBoxContainer/salir" to="." method="_on_salir_pressed"]

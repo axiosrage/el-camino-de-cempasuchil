@@ -8,6 +8,8 @@ extends CharacterBody2D
 @onready var timer_rearme: Timer = $TiempoRearme
 
 @onready var ray_cast: RayCast2D = $RayCast2D
+@onready var pasos: AudioStreamPlayer2D = $Pasos
+@onready var timer_pasos: Timer = $TimerPasos
 @onready var default_ray_x: float = abs(ray_cast.position.x)
 @onready var area_vision: CollisionShape2D = $AreaVision/CollisionShape2D
 @onready var default_area_vision_x: float = abs(area_vision.position.x)
@@ -17,6 +19,11 @@ var player: CharacterBody2D = null
 var desarmado: bool = false
 var rearmando: bool = false
 
+
+func _ready() -> void:
+	timer_pasos.timeout.connect(_on_timer_pasos_timeout)
+
+
 func _physics_process(delta: float) -> void:
 	
 	if desarmado:
@@ -24,6 +31,7 @@ func _physics_process(delta: float) -> void:
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 		move_and_slide()
+		_detener_pasos()
 		return
 	
 	if not is_on_floor():
@@ -54,6 +62,7 @@ func _physics_process(delta: float) -> void:
 		animaciones.play("idle")
 		
 	move_and_slide()
+	_actualizar_pasos()
 
 	if zona_dano:
 		for body in zona_dano.get_overlapping_bodies():
@@ -95,9 +104,40 @@ func _desarmar() -> void:
 	desarmado = true
 	rearmando = false
 	velocity.x = 0
+	_detener_pasos()
+	Sonidos.reproducir_mundo("enemigo_desarmado", global_position, -4.0)
 	zona_dano.set_deferred("monitoring", false)
 	animaciones.play("muerte")
 	timer_rearme.start(duracion_desarme)
+
+
+func _actualizar_pasos() -> void:
+	var caminando := is_on_floor() and absf(velocity.x) > 1.0
+	if caminando:
+		if timer_pasos.is_stopped():
+			_sonar_paso()
+			timer_pasos.start()
+	else:
+		_detener_pasos()
+
+
+func _on_timer_pasos_timeout() -> void:
+	if not desarmado and is_on_floor() and absf(velocity.x) > 1.0:
+		_sonar_paso()
+	else:
+		_detener_pasos()
+
+
+func _sonar_paso() -> void:
+	pasos.stop()
+	pasos.play()
+
+
+func _detener_pasos() -> void:
+	if not timer_pasos.is_stopped():
+		timer_pasos.stop()
+	if pasos.playing:
+		pasos.stop()
 
 
 func _on_tiempo_rearme_timeout() -> void:
