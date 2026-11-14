@@ -13,7 +13,7 @@ config_version=5
 config/name="El camino de Cenpasuchil"
 run/main_scene="res://escenas/menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="uid://b5sdaeie7aoq8"
+config/icon="res://icon.png"
 
 [autoload]
 
