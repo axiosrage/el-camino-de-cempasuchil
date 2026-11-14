@@ -17,9 +17,9 @@ config/icon="uid://b5sdaeie7aoq8"
 
 [autoload]
 
-EstadoJuego="*res://estado_juego.gd"
-Configuracion="*res://configuracion.gd"
-Sonidos="*res://sonidos.gd"
+EstadoJuego="*res://autoload/estado_juego.gd"
+Configuracion="*res://autoload/configuracion.gd"
+Sonidos="*res://autoload/sonidos.gd"
 
 [display]
 

@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://b0ath21st44hp"]
 
-[ext_resource type="Texture2D" path="res://assets/hub/fondo.png" id="1_fondo"]
-[ext_resource type="Texture2D" path="res://assets/hub/Titulo.png" id="2_titulo"]
-[ext_resource type="Texture2D" path="res://assets/hub/botones.png" id="3_botones"]
-[ext_resource type="FontFile" path="res://assets/materiales/FuentePixeles/BoldPixels.otf" id="4_fuente"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/menu/fondo.png" id="1_fondo"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/menu/Titulo.png" id="2_titulo"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/menu/botones.png" id="3_botones"]
+[ext_resource type="FontFile" path="res://assets/interfaz/fuentes/BoldPixels.otf" id="4_fuente"]
 [ext_resource type="Script" path="res://escenas/menu.gd" id="5_menu"]
 [ext_resource type="PackedScene" path="res://escenas/opciones.tscn" id="6_opciones"]
 [ext_resource type="PackedScene" path="res://escenas/seleccion_partidas.tscn" id="7_seleccion"]

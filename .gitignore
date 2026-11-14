@@ -2,6 +2,16 @@
 .godot/
 /android/
 
+# Exportaciones
+exports/
+*.zip
+
+# Packs de terceros que no se redistribuyen.
+# Se conservan en local, pero no se suben al repositorio.
+materiales/interfaz/barras/
+materiales/interfaz/controles/
+materiales/arte/fuentes/barras_xp.psd
+
 # Temporales del editor y registros
 *.tmp
 *.log

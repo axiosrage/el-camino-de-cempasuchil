@@ -1,9 +1,9 @@
 extends CanvasLayer
 
-const CORAZON_LLENO: Texture2D = preload("res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart full.png")
+const CORAZON_LLENO: Texture2D = preload("res://assets/interfaz/hud/corazon_lleno.png")
 # Derivado de heart 50 black.png: recortado a 13x11 y alineado con el corazón lleno.
-const CORAZON_MEDIO: Texture2D = preload("res://assets/hud/corazon_medio.png")
-const CORAZON_VACIO: Texture2D = preload("res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart empty.png")
+const CORAZON_MEDIO: Texture2D = preload("res://assets/interfaz/hud/corazon_medio.png")
+const CORAZON_VACIO: Texture2D = preload("res://assets/interfaz/hud/corazon_vacio.png")
 
 @onready var corazones: Array[TextureRect] = [%Corazon1, %Corazon2, %Corazon3]
 @onready var icono_jade: TextureRect = %IconoJade

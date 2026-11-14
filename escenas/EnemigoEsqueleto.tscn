@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://2mya7r5yuqvd" path="res://escenas/enemigo_esqueleto.gd" id="1_kn2lo"]
 [ext_resource type="Texture2D" uid="uid://cjtxce7jx2rv3" path="res://assets/enemigos/esqueleto/Esqueleto_iddle.png" id="2_kn2lo"]
 [ext_resource type="Texture2D" uid="uid://y4did7nl5fub" path="res://assets/enemigos/esqueleto/esqueleto_desarme.png" id="3_t5om8"]
-[ext_resource type="AudioStreamMP3" path="res://assets/sonidos/pasos_esqueleto.mp3" id="4_pasos"]
+[ext_resource type="AudioStreamMP3" path="res://assets/audio/pasos_esqueleto.mp3" id="4_pasos"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t5om8"]
 size = Vector2(170, 1)

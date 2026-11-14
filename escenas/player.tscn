@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://b582l5jadr48r"]
 
-[ext_resource type="Script" uid="uid://d3ikl7c3p7na1" path="res://player.gd" id="1_6nxto"]
-[ext_resource type="Texture2D" uid="uid://bfyxbcsv1qdia" path="res://assets/personaje/caminar.png" id="2_t3yu4"]
-[ext_resource type="Texture2D" uid="uid://clyxp6ed00top" path="res://assets/personaje/iddle.png" id="3_r4hsq"]
-[ext_resource type="Texture2D" uid="uid://dt3e6ar1q0jh2" path="res://assets/personaje/lanzar.png" id="4_sacnx"]
-[ext_resource type="Texture2D" uid="uid://bddasj08dpih2" path="res://assets/personaje/salto.png" id="5_g1ak7"]
-[ext_resource type="Texture2D" uid="uid://j04hxa8xbmww" path="res://assets/personaje/muerte.png" id="6_r4hsq"]
+[ext_resource type="Script" uid="uid://d3ikl7c3p7na1" path="res://escenas/player.gd" id="1_6nxto"]
+[ext_resource type="Texture2D" uid="uid://bfyxbcsv1qdia" path="res://assets/personajes/jugador/caminar.png" id="2_t3yu4"]
+[ext_resource type="Texture2D" uid="uid://clyxp6ed00top" path="res://assets/personajes/jugador/iddle.png" id="3_r4hsq"]
+[ext_resource type="Texture2D" uid="uid://dt3e6ar1q0jh2" path="res://assets/personajes/jugador/lanzar.png" id="4_sacnx"]
+[ext_resource type="Texture2D" uid="uid://bddasj08dpih2" path="res://assets/personajes/jugador/salto.png" id="5_g1ak7"]
+[ext_resource type="Texture2D" uid="uid://j04hxa8xbmww" path="res://assets/personajes/jugador/muerte.png" id="6_r4hsq"]
 [ext_resource type="Script" uid="uid://ck63opv2sx5n0" path="res://escenas/maquina_estados.gd" id="6_t3yu4"]
-[ext_resource type="Texture2D" uid="uid://catubctgm8ncs" path="res://assets/personaje/muerte_agua.png" id="7_sacnx"]
+[ext_resource type="Texture2D" uid="uid://catubctgm8ncs" path="res://assets/personajes/jugador/muerte_agua.png" id="7_sacnx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6865"]
 size = Vector2(8, 15)

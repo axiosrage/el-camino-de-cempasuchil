@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://escenas/opciones.gd" id="1_opciones"]
-[ext_resource type="FontFile" path="res://assets/materiales/FuentePixeles/BoldPixels.otf" id="2_fuente"]
+[ext_resource type="FontFile" path="res://assets/interfaz/fuentes/BoldPixels.otf" id="2_fuente"]
 
 [sub_resource type="StyleBoxFlat" id="SBF_panel"]
 bg_color = Color(0.0784, 0.0549, 0.1019, 0.97)

@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://escenas/intro.gd" id="1_intro"]
-[ext_resource type="FontFile" path="res://assets/materiales/FuentePixeles/BoldPixels.otf" id="2_fuente"]
-[ext_resource type="Texture2D" path="res://assets/Intro/intro01.png" id="3_p1"]
-[ext_resource type="Texture2D" path="res://assets/Intro/intro02.png" id="4_p2"]
-[ext_resource type="Texture2D" path="res://assets/Intro/intro03.png" id="5_p3"]
-[ext_resource type="Texture2D" path="res://assets/Intro/intro04.png" id="6_p4"]
-[ext_resource type="Texture2D" path="res://assets/Intro/intro05.png" id="7_p5"]
+[ext_resource type="FontFile" path="res://assets/interfaz/fuentes/BoldPixels.otf" id="2_fuente"]
+[ext_resource type="Texture2D" path="res://assets/intro/intro01.png" id="3_p1"]
+[ext_resource type="Texture2D" path="res://assets/intro/intro02.png" id="4_p2"]
+[ext_resource type="Texture2D" path="res://assets/intro/intro03.png" id="5_p3"]
+[ext_resource type="Texture2D" path="res://assets/intro/intro04.png" id="6_p4"]
+[ext_resource type="Texture2D" path="res://assets/intro/intro05.png" id="7_p5"]
 
 [sub_resource type="Theme" id="Theme_intro"]
 default_font = ExtResource("2_fuente")

@@ -7,11 +7,11 @@ signal panel_mostrado(indice: int)
 signal intro_terminada
 
 const PAGINAS: Array[Texture2D] = [
-	preload("res://assets/Intro/intro01.png"),
-	preload("res://assets/Intro/intro02.png"),
-	preload("res://assets/Intro/intro03.png"),
-	preload("res://assets/Intro/intro04.png"),
-	preload("res://assets/Intro/intro05.png"),
+	preload("res://assets/intro/intro01.png"),
+	preload("res://assets/intro/intro02.png"),
+	preload("res://assets/intro/intro03.png"),
+	preload("res://assets/intro/intro04.png"),
+	preload("res://assets/intro/intro05.png"),
 ]
 
 # Cada entrada recorta una viñeta de una página. La primera incluye el

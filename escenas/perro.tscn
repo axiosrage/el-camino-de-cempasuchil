@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dbcxvxuskj0xd"]
 
 [ext_resource type="Script" uid="uid://wouhaurynyga" path="res://escenas/perro.gd" id="1_vq441"]
-[ext_resource type="Texture2D" uid="uid://cnqd2jsuawkpc" path="res://assets/perro/perro-caminar.png" id="1_yh6p5"]
-[ext_resource type="Texture2D" uid="uid://dor2p4pkcodp1" path="res://assets/perro/perro-idle.png" id="2_vq441"]
-[ext_resource type="Texture2D" uid="uid://ct26fr8xxi357" path="res://assets/perro/perro-nadando.png" id="4_xvp5o"]
+[ext_resource type="Texture2D" uid="uid://cnqd2jsuawkpc" path="res://assets/personajes/perro/perro-caminar.png" id="1_yh6p5"]
+[ext_resource type="Texture2D" uid="uid://dor2p4pkcodp1" path="res://assets/personajes/perro/perro-idle.png" id="2_vq441"]
+[ext_resource type="Texture2D" uid="uid://ct26fr8xxi357" path="res://assets/personajes/perro/perro-nadando.png" id="4_xvp5o"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vq441"]
 blend_mode = 1

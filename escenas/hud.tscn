@@ -1,11 +1,11 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://escenas/hud.gd" id="1_hud"]
-[ext_resource type="Texture2D" path="res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart full.png" id="2_lleno"]
-[ext_resource type="Texture2D" path="res://assets/hud/corazon_medio.png" id="3_medio"]
-[ext_resource type="Texture2D" path="res://assets/materiales/interfaz/barras/sprites/hearts/heart/heart empty.png" id="4_vacio"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/hud/corazon_lleno.png" id="2_lleno"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/hud/corazon_medio.png" id="3_medio"]
+[ext_resource type="Texture2D" path="res://assets/interfaz/hud/corazon_vacio.png" id="4_vacio"]
 [ext_resource type="Texture2D" path="res://assets/items/item-hade.png" id="5_jade"]
-[ext_resource type="FontFile" path="res://assets/ui/fuentes/PixelifySans.ttf" id="6_fuente"]
+[ext_resource type="FontFile" path="res://assets/interfaz/fuentes/PixelifySans.ttf" id="6_fuente"]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 10
