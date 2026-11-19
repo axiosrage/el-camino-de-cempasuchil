@@ -1,0 +1,118 @@
+[gd_resource type="Theme" load_steps=9 format=3]
+
+[ext_resource type="FontFile" path="res://assets/interfaz/fuentes/BoldPixels.otf" id="1_fuente"]
+
+[sub_resource type="StyleBoxFlat" id="SBF_boton_normal"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0588, 0.4196, 0.3608, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9686, 0.7882, 0.2824, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 4
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="SBF_boton_hover"]
+content_margin_left = 18.0
+content_margin_top = 8.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.0784, 0.502, 0.4314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9686, 0.7882, 0.2824, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 6
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="SBF_boton_pressed"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
+bg_color = Color(0.0392, 0.2902, 0.251, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7216, 0.5255, 0.1804, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="SBF_boton_focus"]
+bg_color = Color(0.9686, 0.7882, 0.2824, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9686, 0.7882, 0.2824, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="SBF_slider"]
+bg_color = Color(0.1608, 0.1019, 0.1804, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="SBF_slider_relleno"]
+bg_color = Color(0.9686, 0.7882, 0.2824, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="SBF_slider_relleno_highlight"]
+bg_color = Color(1, 0.898, 0.45, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+
+[resource]
+default_font = ExtResource("1_fuente")
+default_font_size = 20
+Label/colors/font_color = Color(0.9608, 0.902, 0.7843, 1)
+Button/colors/font_color = Color(0.9608, 0.902, 0.7843, 1)
+Button/colors/font_hover_color = Color(0.9686, 0.7882, 0.2824, 1)
+Button/colors/font_pressed_color = Color(0.9608, 0.902, 0.7843, 1)
+Button/colors/font_focus_color = Color(0.9686, 0.7882, 0.2824, 1)
+Button/font_sizes/font_size = 18
+Button/styles/normal = SubResource("SBF_boton_normal")
+Button/styles/hover = SubResource("SBF_boton_hover")
+Button/styles/pressed = SubResource("SBF_boton_pressed")
+Button/styles/focus = SubResource("SBF_boton_focus")
+HSlider/styles/slider = SubResource("SBF_slider")
+HSlider/styles/grabber_area = SubResource("SBF_slider_relleno")
+HSlider/styles/grabber_area_highlight = SubResource("SBF_slider_relleno_highlight")
+CheckButton/colors/font_color = Color(0.9608, 0.902, 0.7843, 1)
+CheckButton/colors/font_hover_color = Color(0.9686, 0.7882, 0.2824, 1)
+CheckButton/colors/font_pressed_color = Color(0.9608, 0.902, 0.7843, 1)
+CheckButton/colors/font_focus_color = Color(0.9686, 0.7882, 0.2824, 1)
+CheckButton/font_sizes/font_size = 18
