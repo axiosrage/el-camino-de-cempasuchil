@@ -4,7 +4,7 @@ Juego de plataformas 2D en pixel art desarrollado en **Godot 4.7**. El nivel tra
 en un paisaje inspirado en el Mictlán: plataformas, trampas, enemigos y agua que quita
 vidas.
 
-**Jugar en itch.io:** <https://axiosrage.itch.io/el-camino-de-cempaschil>
+**Jugar en itch.io:** <https://axiosrage.itch.io/el-camino-de-cempasuchil>
 
 ## Estado
 
