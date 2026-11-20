@@ -30,6 +30,26 @@ Enlaces:
 - Pixel Xp Bars: <https://ko-fi.com/justajokeart>
 - Stones pack: Telegram `@SirCatIsCat`
 
+## Visión por computadora (versión web)
+
+La detección de presencia del navegador usa componentes de
+[MediaPipe](https://github.com/google-ai-edge/mediapipe) de Google LLC, todos bajo
+licencia **Apache-2.0**:
+
+| Componente | Uso | Ubicación |
+| --- | --- | --- |
+| MediaPipe Tasks Vision 0.10.21 | Runtime de inferencia en el navegador (WebAssembly) | `web/mediapipe/vision_bundle.js`, `web/mediapipe/wasm/` |
+| Face Detector / BlazeFace short-range | Modelo preentrenado de detección de rostros | `web/mediapipe/blaze_face_short_range.tflite` |
+
+El texto completo de la licencia está en
+[`web/mediapipe/LICENCIA-APACHE-2.0.txt`](../web/mediapipe/LICENCIA-APACHE-2.0.txt).
+El modelo se ejecuta localmente en el navegador: las imágenes de la cámara no se
+guardan ni se envían a ningún servidor.
+
+En la versión de Linux, la detección de movimiento usa únicamente la API
+`CameraServer` de Godot y el flujo de vídeo del dispositivo local; no incluye
+componentes de terceros.
+
 ## Fuentes
 
 | Fuente | Uso | Licencia |

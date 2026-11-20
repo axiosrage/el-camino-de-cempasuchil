@@ -20,6 +20,7 @@ config/icon="res://icon.png"
 EstadoJuego="*res://autoload/estado_juego.gd"
 Configuracion="*res://autoload/configuracion.gd"
 Sonidos="*res://autoload/sonidos.gd"
+DetectorPresencia="*res://autoload/detector_presencia.gd"
 
 [display]
 

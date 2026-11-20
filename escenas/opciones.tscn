@@ -63,7 +63,7 @@ theme_override_constants/margin_bottom = 26
 
 [node name="VBox" type="VBoxContainer" parent="Centro/Panel/Margen"]
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 10
 
 [node name="Titulo" type="Label" parent="Centro/Panel/Margen/VBox"]
 layout_mode = 2
@@ -125,6 +125,96 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 text = "NO"
+
+[node name="SeparadorPausa" type="ColorRect" parent="Centro/Panel/Margen/VBox"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.9686, 0.7882, 0.2824, 0.35)
+
+[node name="PausaTitulo" type="Label" parent="Centro/Panel/Margen/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
+theme_override_font_sizes/font_size = 22
+text = "PAUSA AUTOMÁTICA"
+
+[node name="PausaFila" type="HBoxContainer" parent="Centro/Panel/Margen/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PausaTexto" type="Label" parent="Centro/Panel/Margen/VBox/PausaFila"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "SIN PRESENCIA"
+vertical_alignment = 1
+
+[node name="TiempoPausa" type="HSlider" parent="Centro/Panel/Margen/VBox/PausaFila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 3.0
+step = 1.0
+value = 1.0
+tick_count = 4
+ticks_on_borders = true
+tooltip_text = "3, 5, 10 o 20 segundos sin presencia"
+
+[node name="TiempoPausaValor" type="Label" parent="Centro/Panel/Margen/VBox/PausaFila"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+text = "5 s"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CamaraFila" type="HBoxContainer" parent="Centro/Panel/Margen/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CamaraTexto" type="Label" parent="Centro/Panel/Margen/VBox/CamaraFila"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+text = "CÁMARA"
+vertical_alignment = 1
+
+[node name="EspaciadorCamara" type="Control" parent="Centro/Panel/Margen/VBox/CamaraFila"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="CamaraCheck" type="CheckButton" parent="Centro/Panel/Margen/VBox/CamaraFila"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NO"
+
+[node name="FocoFila" type="HBoxContainer" parent="Centro/Panel/Margen/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="FocoTexto" type="Label" parent="Centro/Panel/Margen/VBox/FocoFila"]
+layout_mode = 2
+text = "AL PERDER EL FOCO"
+vertical_alignment = 1
+
+[node name="EspaciadorFoco" type="Control" parent="Centro/Panel/Margen/VBox/FocoFila"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="FocoCheck" type="CheckButton" parent="Centro/Panel/Margen/VBox/FocoFila"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "SI"
+
+[node name="EstadoCamara" type="Label" parent="Centro/Panel/Margen/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 0.65)
+theme_override_font_sizes/font_size = 14
+text = "CÁMARA: APAGADA · LA IMAGEN NO SE GUARDA"
+autowrap_mode = 2
 
 [node name="Separador2" type="ColorRect" parent="Centro/Panel/Margen/VBox"]
 custom_minimum_size = Vector2(0, 2)

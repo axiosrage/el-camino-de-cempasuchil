@@ -1,17 +1,24 @@
 extends Node
 
-## Configuración persistente de audio y vídeo.
+## Configuración persistente de audio, vídeo y pausa automática.
 ## Se aplica al arrancar y cada vez que el jugador cambia una opción.
+
+signal pausa_cambiada
 
 const RUTA_CONFIG := "user://configuracion.cfg"
 const VOLUMEN_DEFECTO := 0.8
 const ANCHO_DEFECTO := 1152
 const ALTO_DEFECTO := 648
+const TIEMPOS_PAUSA := [3, 5, 10, 20]
+const TIEMPO_PAUSA_DEFECTO := 5
 
 var volumen: float = VOLUMEN_DEFECTO
 var pantalla_completa: bool = false
 var ventana_ancho: int = ANCHO_DEFECTO
 var ventana_alto: int = ALTO_DEFECTO
+var pausa_camara: bool = false
+var pausa_foco: bool = true
+var pausa_tiempo: int = TIEMPO_PAUSA_DEFECTO
 
 var _hay_config: bool = false
 
@@ -33,6 +40,11 @@ func cargar() -> void:
 	pantalla_completa = bool(config.get_value("video", "pantalla_completa", false))
 	ventana_ancho = clampi(int(config.get_value("video", "ventana_ancho", ANCHO_DEFECTO)), 640, 7680)
 	ventana_alto = clampi(int(config.get_value("video", "ventana_alto", ALTO_DEFECTO)), 360, 4320)
+	pausa_camara = bool(config.get_value("pausa", "camara", false))
+	pausa_foco = bool(config.get_value("pausa", "foco", true))
+	pausa_tiempo = int(config.get_value("pausa", "tiempo", TIEMPO_PAUSA_DEFECTO))
+	if not TIEMPOS_PAUSA.has(pausa_tiempo):
+		pausa_tiempo = TIEMPO_PAUSA_DEFECTO
 
 
 func guardar() -> void:
@@ -41,6 +53,9 @@ func guardar() -> void:
 	config.set_value("video", "pantalla_completa", pantalla_completa)
 	config.set_value("video", "ventana_ancho", ventana_ancho)
 	config.set_value("video", "ventana_alto", ventana_alto)
+	config.set_value("pausa", "camara", pausa_camara)
+	config.set_value("pausa", "foco", pausa_foco)
+	config.set_value("pausa", "tiempo", pausa_tiempo)
 	var error := config.save(RUTA_CONFIG)
 	if error != OK:
 		push_warning("No se pudo guardar la configuración (error %d)" % error)
@@ -63,6 +78,32 @@ func set_pantalla_completa(activa: bool) -> void:
 	pantalla_completa = activa
 	aplicar_pantalla()
 	guardar()
+
+
+func set_pausa_camara(activa: bool) -> void:
+	if activa == pausa_camara:
+		return
+	pausa_camara = activa
+	guardar()
+	pausa_cambiada.emit()
+
+
+func set_pausa_foco(activa: bool) -> void:
+	if activa == pausa_foco:
+		return
+	pausa_foco = activa
+	guardar()
+	pausa_cambiada.emit()
+
+
+func set_pausa_tiempo(segundos: int) -> void:
+	if not TIEMPOS_PAUSA.has(segundos):
+		segundos = TIEMPO_PAUSA_DEFECTO
+	if segundos == pausa_tiempo:
+		return
+	pausa_tiempo = segundos
+	guardar()
+	pausa_cambiada.emit()
 
 
 func aplicar_volumen() -> void:

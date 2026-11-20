@@ -8,6 +8,10 @@ const CORAZON_VACIO: Texture2D = preload("res://assets/interfaz/hud/corazon_vaci
 @onready var corazones: Array[TextureRect] = [%Corazon1, %Corazon2, %Corazon3]
 @onready var icono_jade: TextureRect = %IconoJade
 @onready var etiqueta_jades: Label = %CantidadJades
+@onready var aviso: PanelContainer = %Aviso
+@onready var aviso_texto: Label = %AvisoTexto
+@onready var depuracion: PanelContainer = %Depuracion
+@onready var depuracion_texto: Label = %DepuracionTexto
 
 var _vida_previa: int = -1
 var _jades_previos: int = -1
@@ -20,6 +24,53 @@ func _ready() -> void:
 	# La primera actualización del nivel no debe contar como daño ni recogida.
 	_vida_previa = -1
 	_jades_previos = -1
+	aviso.visible = false
+	depuracion.visible = false
+
+
+func _process(_delta: float) -> void:
+	var mostrar_aviso := DetectorPresencia.get_aviso_visible()
+	aviso.visible = mostrar_aviso
+	if mostrar_aviso:
+		aviso_texto.text = "¿SIGUES AHÍ?  %.1f s" % maxf(
+			DetectorPresencia.get_restante_pausa(), 0.0
+		)
+
+	if depuracion.visible:
+		_actualizar_depuracion()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F3 or event.physical_keycode == KEY_F3:
+			depuracion.visible = not depuracion.visible
+			get_viewport().set_input_as_handled()
+
+
+func _actualizar_depuracion() -> void:
+	var presencia := "SÍ" if DetectorPresencia.get_presencia() else "NO"
+	var sin_presencia := DetectorPresencia.get_segundos_sin_presencia()
+	var sin_entrada := DetectorPresencia.get_segundos_sin_entrada()
+	var tiempo := DetectorPresencia.get_tiempo_pausa()
+	var restante := maxf(float(tiempo) - maxf(sin_presencia, sin_entrada), 0.0)
+	var motivo := "-" if DetectorPresencia.get_motivo_auto().is_empty() else DetectorPresencia.get_motivo_auto()
+
+	var lineas := PackedStringArray([
+		"F3 · VISIÓN",
+		"ESTADO: %s" % DetectorPresencia.get_estado_texto(),
+		"CÁMARA: %s" % DetectorPresencia.get_backend_nombre(),
+		"PRESENCIA: %s · %.2f" % [presencia, DetectorPresencia.get_confianza()],
+		"AUTO: %s · %s" % ["SÍ" if DetectorPresencia.get_auto_pausado() else "NO", motivo],
+		"SIN PRESENCIA: %.1f s" % sin_presencia,
+		"SIN ENTRADA: %.1f s" % sin_entrada,
+		"PAUSA EN: %.1f s · TIEMPO: %d s" % [restante, tiempo],
+		"REANUDACIÓN: %.1f s" % DetectorPresencia.get_restante_reanudacion(),
+		"LATENCIA: %d ms · %.1f fps" % [
+			DetectorPresencia.get_latencia_ms(),
+			DetectorPresencia.get_fps(),
+		],
+	])
+	depuracion_texto.text = "\n".join(lineas)
 
 
 func actualizar_vida(vida_media: int, vida_maxima_media: int) -> void:

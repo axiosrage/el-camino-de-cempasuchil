@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene load_steps=2 format=3]
 
 [ext_resource type="Script" path="res://escenas/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" path="res://assets/interfaz/hud/corazon_lleno.png" id="2_lleno"]
@@ -7,7 +7,20 @@
 [ext_resource type="Texture2D" path="res://assets/items/item-hade.png" id="5_jade"]
 [ext_resource type="FontFile" path="res://assets/interfaz/fuentes/PixelifySans.ttf" id="6_fuente"]
 
+[sub_resource type="StyleBoxFlat" id="SBF_panel_hud"]
+bg_color = Color(0.0784, 0.0549, 0.1019, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9686, 0.7882, 0.2824, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="HUD" type="CanvasLayer"]
+process_mode = 3
 layer = 10
 script = ExtResource("1_hud")
 
@@ -86,3 +99,87 @@ theme_override_fonts/font = ExtResource("6_fuente")
 theme_override_font_sizes/font_size = 26
 text = "x 0"
 vertical_alignment = 1
+
+[node name="AvisoCentro" type="CenterContainer" parent="Contenido"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 130.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Aviso" type="PanelContainer" parent="Contenido/AvisoCentro"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("SBF_panel_hud")
+
+[node name="MargenAviso" type="MarginContainer" parent="Contenido/AvisoCentro/Aviso"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxAviso" type="VBoxContainer" parent="Contenido/AvisoCentro/Aviso/MargenAviso"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="AvisoTexto" type="Label" parent="Contenido/AvisoCentro/Aviso/MargenAviso/VBoxAviso"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9804, 0.8275, 0.3137, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 28
+text = "¿SIGUES AHÍ?"
+horizontal_alignment = 1
+
+[node name="AvisoAyuda" type="Label" parent="Contenido/AvisoCentro/Aviso/MargenAviso/VBoxAviso"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 0.72)
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 14
+text = "MUEVE EL RATÓN O ACÉRCATE A LA CÁMARA"
+horizontal_alignment = 1
+
+[node name="Depuracion" type="PanelContainer" parent="Contenido"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = 225.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("SBF_panel_hud")
+
+[node name="MargenDepuracion" type="MarginContainer" parent="Contenido/Depuracion"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="DepuracionTexto" type="Label" parent="Contenido/Depuracion/MargenDepuracion"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.62, 0.96, 0.85, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 14
+text = "F3 · VISIÓN"

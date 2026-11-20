@@ -1,0 +1,19 @@
+MediaPipe Face Detector (BlazeFace)
+====================================
+
+Este directorio contiene el runtime de MediaPipe Tasks Vision y el modelo
+BlazeFace para la detección de rostros en la versión web del juego.
+
+- vision_bundle.js: MediaPipe Tasks Vision 0.10.21 (Google LLC), Apache-2.0.
+- wasm/: runtime WASM de MediaPipe (variantes con y sin SIMD), Apache-2.0.
+- blaze_face_short_range.tflite: modelo BlazeFace short-range de MediaPipe,
+  Apache-2.0. Fuente:
+  https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite
+- LICENCIA-APACHE-2.0.txt: texto completo de la licencia.
+
+El modelo se ejecuta localmente en el navegador. Ninguna imagen de la cámara
+se guarda ni se envía a un servidor.
+
+Más información:
+- https://ai.google.dev/edge/mediapipe/solutions/vision/face_detector
+- https://github.com/google-ai-edge/mediapipe
