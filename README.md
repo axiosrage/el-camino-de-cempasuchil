@@ -125,6 +125,17 @@ del juego no se ve afectado.
 Si el navegador bloquea la cámara dentro del iframe de itch.io, abre el juego en una
 pestaña nueva desde el botón de pantalla completa o el enlace de la página.
 
+## Pruebas de la pausa automática
+
+La lógica del detector se puede probar sin cámara, con un backend falso:
+
+```bash
+godot --headless --path . pruebas/detector_test.tscn
+```
+
+La prueba simula ausencia, entrada de teclado, pérdida de foco y apagado/reactivación
+de la cámara. `pruebas/` está excluido de los presets de exportación.
+
 ## Créditos
 
 Consulta [docs/CREDITOS.md](docs/CREDITOS.md) para los recursos de terceros y sus
