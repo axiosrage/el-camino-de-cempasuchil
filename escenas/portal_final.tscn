@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://escenas/portal_final.gd" id="1_portal"]
+[ext_resource type="Texture2D" path="res://assets/escenario/tilesets/portal.png" id="2_portal"]
+
+[sub_resource type="Gradient" id="Gradient_portal"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 0.86, 0.35, 0.9, 1, 0.58, 0.1, 0.4, 1, 0.35, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_portal"]
+gradient = SubResource("Gradient_portal")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_portal"]
+radius = 42.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_portal"]
+blend_mode = 1
+light_mode = 2
+
+[node name="PortalFinal" type="Node2D"]
+script = ExtResource("1_portal")
+
+[node name="Brillo" type="Sprite2D" parent="."]
+position = Vector2(0, -35)
+material = SubResource("CanvasItemMaterial_portal")
+modulate = Color(1, 0.8, 0.35, 0.85)
+texture = SubResource("GradientTexture2D_portal")
+scale = Vector2(1.1, 1.1)
+
+[node name="Portal" type="Sprite2D" parent="."]
+position = Vector2(0, -35)
+texture = ExtResource("2_portal")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -22)
+shape = SubResource("CircleShape2D_portal")

@@ -10,12 +10,15 @@ const CORAZON_VACIO: Texture2D = preload("res://assets/interfaz/hud/corazon_vaci
 @onready var etiqueta_jades: Label = %CantidadJades
 @onready var aviso: PanelContainer = %Aviso
 @onready var aviso_texto: Label = %AvisoTexto
+@onready var mensaje: PanelContainer = %Mensaje
+@onready var mensaje_texto: Label = %MensajeTexto
 @onready var depuracion: PanelContainer = %Depuracion
 @onready var depuracion_texto: Label = %DepuracionTexto
 
 var _vida_previa: int = -1
 var _jades_previos: int = -1
 var _jades_completados: bool = false
+var _mensaje_tween: Tween
 
 
 func _ready() -> void:
@@ -25,6 +28,7 @@ func _ready() -> void:
 	_vida_previa = -1
 	_jades_previos = -1
 	aviso.visible = false
+	mensaje.visible = false
 	depuracion.visible = false
 
 
@@ -94,6 +98,34 @@ func actualizar_vida(vida_media: int, vida_maxima_media: int) -> void:
 		_pulso_corazon(clampi(vida_media / 2, 0, total_corazones - 1))
 
 	_vida_previa = vida_media
+
+
+## Muestra un aviso temporal en el centro de la pantalla. Se usa para la
+## flor final y para explicar que el portal todavía está sellado.
+func mostrar_mensaje(texto: String, duracion: float = 3.0) -> void:
+	if _mensaje_tween != null and _mensaje_tween.is_valid():
+		_mensaje_tween.kill()
+
+	mensaje_texto.text = texto
+	mensaje.visible = true
+	mensaje.modulate.a = 0.0
+
+	_mensaje_tween = create_tween()
+	_mensaje_tween.tween_property(mensaje, "modulate:a", 1.0, 0.2)
+	_mensaje_tween.tween_interval(maxf(duracion, 0.1))
+	_mensaje_tween.tween_property(mensaje, "modulate:a", 0.0, 0.4)
+	_mensaje_tween.tween_callback(_ocultar_mensaje)
+
+
+func ocultar_mensaje() -> void:
+	if _mensaje_tween != null and _mensaje_tween.is_valid():
+		_mensaje_tween.kill()
+	_ocultar_mensaje()
+
+
+func _ocultar_mensaje() -> void:
+	mensaje.visible = false
+	mensaje.modulate.a = 1.0
 
 
 func actualizar_jades(recogidos: int, total: int) -> void:

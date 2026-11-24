@@ -11,6 +11,8 @@ signal cerrado
 @onready var foco_check: CheckButton = %FocoCheck
 @onready var estado_camara: Label = %EstadoCamara
 @onready var volver: Button = %Volver
+@onready var foco: ReferenceRect = $Foco
+@onready var panel: PanelContainer = $Centro/Panel
 
 var _permiso_pendiente: bool = false
 
@@ -24,6 +26,9 @@ func _ready() -> void:
 	foco_check.toggled.connect(_on_foco_cambiado)
 	DetectorPresencia.estado_cambiado.connect(_on_detector_estado)
 	DetectorPresencia.permiso_resultado.connect(_on_permiso_resultado)
+	get_viewport().gui_focus_changed.connect(_on_foco_gui_cambiado)
+	get_viewport().size_changed.connect(_actualizar_foco)
+	panel.resized.connect(_actualizar_foco)
 	visible = false
 
 
@@ -33,14 +38,49 @@ func abrir() -> void:
 	modulate.a = 0.0
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 1.0, 0.15)
-	volver.grab_focus()
+
+	# Esperamos un frame a que el panel termine de recolocarse con los
+	# textos actualizados; si no, el anillo de foco usa la posición vieja.
+	await get_tree().process_frame
+	if not visible:
+		return
+
+	# El primer control recibe el foco para que el mando pueda ajustar
+	# opciones sin tener que navegar desde «Volver».
+	volumen_slider.grab_focus()
+	_actualizar_foco()
 
 
 func cerrar() -> void:
 	if not visible:
 		return
 	visible = false
+	foco.visible = false
 	cerrado.emit()
+
+
+func _on_foco_gui_cambiado(_control: Control) -> void:
+	_actualizar_foco()
+
+
+func _actualizar_foco() -> void:
+	if not visible:
+		foco.visible = false
+		return
+
+	var control := get_viewport().gui_get_focus_owner()
+	if control == null or not panel.is_ancestor_of(control):
+		foco.visible = false
+		return
+
+	var rect := control.get_global_rect()
+	var padre := control.get_parent()
+	if padre is HBoxContainer and (control is HSlider or control is CheckButton):
+		rect = (padre as Control).get_global_rect()
+
+	foco.global_position = (rect.position - Vector2(4.0, 4.0)).floor()
+	foco.size = (rect.size + Vector2(8.0, 8.0)).floor()
+	foco.visible = true
 
 
 func _cargar_ui() -> void:

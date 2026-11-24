@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://escenas/flor_final.gd" id="1_flor"]
+[ext_resource type="Texture2D" path="res://assets/items/flor.png" id="2_flor"]
+
+[sub_resource type="Gradient" id="Gradient_flor"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.9, 0.45, 0.85, 1, 0.55, 0.15, 0.35, 1, 0.3, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_flor"]
+gradient = SubResource("Gradient_flor")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_flor"]
+radius = 24.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_flor"]
+blend_mode = 1
+light_mode = 2
+
+[node name="FlorFinal" type="Node2D"]
+script = ExtResource("1_flor")
+
+[node name="Brillo" type="Sprite2D" parent="."]
+position = Vector2(0, -30)
+material = SubResource("CanvasItemMaterial_flor")
+modulate = Color(1, 0.82, 0.45, 0.8)
+texture = SubResource("GradientTexture2D_flor")
+scale = Vector2(0.35, 0.35)
+
+[node name="Flor" type="Sprite2D" parent="."]
+position = Vector2(0, -30)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("2_flor")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -14)
+shape = SubResource("CircleShape2D_flor")

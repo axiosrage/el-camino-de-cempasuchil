@@ -20,6 +20,7 @@ var checkpoint_posicion: Vector2 = Vector2.ZERO
 
 var jades_recogidos: int = 0
 var jades_recogidos_nombres: Array[String] = []
+var flor_recogida: bool = false
 
 # Ranura en la que se está jugando. 0 significa que no hay una activa.
 var slot_activo: int = 0
@@ -74,6 +75,7 @@ func info_slot(slot: int) -> Dictionary:
 	base["vida_media"] = int(datos.get("vida_media", vida_maxima_media))
 	base["vida_maxima_media"] = int(datos.get("vida_maxima_media", vida_maxima_media))
 	base["jades"] = jades.size()
+	base["flor_recogida"] = bool(datos.get("flor_recogida", false))
 	base["fecha"] = str(datos.get("fecha", ""))
 	base["posicion"] = datos.get("posicion", Vector2.ZERO)
 	return base
@@ -95,6 +97,7 @@ func cargar_slot(slot: int) -> bool:
 		if not texto.is_empty() and not jades_recogidos_nombres.has(texto):
 			jades_recogidos_nombres.append(texto)
 	jades_recogidos = jades_recogidos_nombres.size()
+	flor_recogida = bool(datos.get("flor_recogida", false))
 
 	checkpoint_escena = str(datos.get("escena", ESCENA_NIVEL_1))
 	checkpoint_posicion = datos.get("posicion", Vector2.ZERO)
@@ -140,6 +143,7 @@ func guardar_slot_actual(escena: String, posicion: Vector2, nombre_nivel: String
 		"vida_media": vida_media,
 		"vida_maxima_media": vida_maxima_media,
 		"jades": jades,
+		"flor_recogida": flor_recogida,
 		"fecha": _fecha_actual(),
 	}
 
@@ -179,6 +183,10 @@ func registrar_jade(nombre: String) -> void:
 	jades_recogidos = jades_recogidos_nombres.size()
 
 
+func registrar_flor() -> void:
+	flor_recogida = true
+
+
 ## Prepara el reaparecido en la última superficie segura. La vida ya
 ## viene descontada por el agua. Devuelve false si no hay checkpoint.
 func respawn_en_ultimo_suelo() -> bool:
@@ -201,6 +209,7 @@ func reiniciar_nivel_completo() -> void:
 	vida_media = vida_maxima_media
 	jades_recogidos = 0
 	jades_recogidos_nombres.clear()
+	flor_recogida = false
 	checkpoint_escena = ""
 	checkpoint_posicion = Vector2.ZERO
 	partida_cargada = false
@@ -217,6 +226,7 @@ func reiniciar_estado() -> void:
 	checkpoint_posicion = Vector2.ZERO
 	jades_recogidos = 0
 	jades_recogidos_nombres.clear()
+	flor_recogida = false
 	partida_cargada = false
 	respawn_en_checkpoint = false
 	reinicio_completo = false

@@ -47,7 +47,7 @@ func _process(_delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("pausa"):
 		# Con Opciones abierto, ese panel se encarga de cerrarse.
 		if opciones_panel.visible:
 			return
@@ -56,6 +56,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			pausar()
 		get_viewport().set_input_as_handled()
+		return
+
+	# B/atrás reanuda la pausa, pero no la abre: para eso está Start.
+	if event.is_action_pressed("ui_cancel"):
+		if opciones_panel.visible:
+			return
+		if visible:
+			reanudar()
+			get_viewport().set_input_as_handled()
 
 
 ## Pausa manual: detiene la cámara y cancela cualquier pausa automática.

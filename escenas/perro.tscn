@@ -225,7 +225,6 @@ collision_mask = 129
 script = ExtResource("1_vq441")
 
 [node name="PointLight2D2" type="Sprite2D" parent="." unique_id=462837142]
-visible = false
 modulate = Color(1, 1, 1, 0.078431375)
 z_index = 5
 material = SubResource("CanvasItemMaterial_vq441")
@@ -241,7 +240,6 @@ sprite_frames = SubResource("SpriteFrames_f6865")
 animation = &"nadando"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1370241558]
-visible = false
 position = Vector2(1, -9)
 scale = Vector2(0.23828124, 0.203125)
 texture = SubResource("GradientTexture2D_rlpx1")

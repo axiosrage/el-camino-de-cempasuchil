@@ -9,6 +9,7 @@ extends Control
 @onready var fade_rect: ColorRect = $FadeRect
 @onready var opciones_panel = $Opciones
 @onready var seleccion_panel = $SeleccionPartidas
+@onready var aviso_pausa = $AvisoPausa
 
 var _botones: Array[TextureButton] = []
 var _transicionando: bool = false
@@ -16,6 +17,7 @@ var _boton_origen_panel: TextureButton
 
 
 func _ready() -> void:
+	Musica.reproducir_menu()
 	_botones = [continuar, nueva, opciones, salir]
 
 	for boton in _botones:
@@ -33,6 +35,8 @@ func _ready() -> void:
 	seleccion_panel.cerrado.connect(_on_seleccion_cerrado)
 	seleccion_panel.cargar_solicitado.connect(_on_cargar_solicitado)
 	seleccion_panel.nueva_solicitada.connect(_on_nueva_solicitada)
+	aviso_pausa.cerrado.connect(_on_aviso_cerrado)
+	aviso_pausa.opciones_solicitadas.connect(_on_aviso_opciones)
 
 	get_viewport().size_changed.connect(_on_viewport_size_changed)
 
@@ -46,8 +50,25 @@ func _ready() -> void:
 
 	_actualizar_pivotes()
 	_configurar_focos()
-	_fundir_entrada()
 
+	var mostrar_aviso: bool = aviso_pausa.debe_mostrarse()
+	if mostrar_aviso:
+		# Los botones del menú no deben recibir foco mientras el aviso
+		# modal está abierto.
+		_set_foco_botones(false)
+	else:
+		_foco_inicial_menu()
+
+	await _fundir_entrada()
+	if not is_inside_tree():
+		return
+
+	if mostrar_aviso:
+		aviso_pausa.abrir()
+		_actualizar_foco()
+
+
+func _foco_inicial_menu() -> void:
 	if continuar.disabled:
 		nueva.grab_focus()
 	else:
@@ -208,6 +229,40 @@ func _abrir_seleccion(modo_nueva: bool) -> void:
 
 func _on_opciones_cerrado() -> void:
 	_restaurar_foco_menu(opciones)
+
+
+func _on_aviso_cerrado() -> void:
+	_restaurar_foco_menu(null)
+
+
+func _on_aviso_opciones() -> void:
+	_boton_origen_panel = opciones
+	_set_foco_botones(false)
+	opciones_panel.abrir()
+
+
+## Espacio, Enter y A saltan el panel que esté abierto en el menú. Si el
+## control enfocado usa «aceptar» (un botón, un check, etc.), ese control
+## tiene prioridad y el evento no llega hasta aquí.
+func _unhandled_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_accept"):
+		return
+
+	# Si el foco está en un botón, ese botón se encarga de «aceptar»; no
+	# debemos saltarnos el panel antes de que reciba el evento.
+	if get_viewport().gui_get_focus_owner() is BaseButton:
+		return
+
+	if aviso_pausa.visible:
+		aviso_pausa.cerrar()
+	elif opciones_panel.visible:
+		opciones_panel.cerrar()
+	elif seleccion_panel.visible:
+		seleccion_panel.cerrar()
+	else:
+		return
+
+	get_viewport().set_input_as_handled()
 
 
 func _on_seleccion_cerrado() -> void:

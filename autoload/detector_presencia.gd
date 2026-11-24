@@ -218,8 +218,8 @@ func _input(event: InputEvent) -> void:
 			or event is InputEventMouseButton \
 			or event is InputEventMouseMotion \
 			or event is InputEventJoypadButton \
-			or event is InputEventJoypadMotion \
-			or event is InputEventScreenTouch:
+			or event is InputEventScreenTouch \
+			or (event is InputEventJoypadMotion and absf(event.axis_value) > 0.5):
 		_ultimo_input_ms = Time.get_ticks_msec()
 
 

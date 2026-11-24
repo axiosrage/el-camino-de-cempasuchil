@@ -1,45 +1,40 @@
 extends Control
 
-## Intro de cómic: muestra las páginas de assets/Intro viñeta por viñeta.
-## Avanza sola y se puede saltar con Esc o con el botón inferior.
+## Intro de cómic: muestra las viñetas de assets/intro/Historia_Mictlán.
+## Cada imagen es ya un panel completo en 16:9, así que no hay que recortar
+## páginas. Avanza sola. Espacio, Enter o A saltan al siguiente panel; Esc, B
+## o el botón «SALTAR INTRO» saltan la intro completa.
 
 signal panel_mostrado(indice: int)
 signal intro_terminada
 
-const PAGINAS: Array[Texture2D] = [
-	preload("res://assets/intro/intro01.png"),
-	preload("res://assets/intro/intro02.png"),
-	preload("res://assets/intro/intro03.png"),
-	preload("res://assets/intro/intro04.png"),
-	preload("res://assets/intro/intro05.png"),
-]
-
-# Cada entrada recorta una viñeta de una página. La primera incluye el
-# título de la historia y la viñeta de apertura para que no quede como
-# una franja demasiado fina en pantalla.
+# Duraciones en segundos. La apertura y el cierre se dejan un poco más para
+# poder leer el título y el último texto.
 const PANELES := [
-	{"pagina": 0, "region": Rect2(15, 12, 998, 493), "duracion": 6.0},
-	{"pagina": 0, "region": Rect2(15, 519, 424, 530), "duracion": 4.0},
-	{"pagina": 0, "region": Rect2(453, 519, 560, 530), "duracion": 4.5},
-	{"pagina": 0, "region": Rect2(15, 1066, 998, 455), "duracion": 4.5},
-	{"pagina": 1, "region": Rect2(12, 12, 398, 478), "duracion": 4.5},
-	{"pagina": 1, "region": Rect2(423, 12, 591, 478), "duracion": 4.0},
-	{"pagina": 1, "region": Rect2(12, 504, 485, 649), "duracion": 3.5},
-	{"pagina": 1, "region": Rect2(510, 504, 504, 649), "duracion": 3.0},
-	{"pagina": 1, "region": Rect2(12, 1166, 1001, 353), "duracion": 4.5},
-	{"pagina": 2, "region": Rect2(0, 0, 1024, 357), "duracion": 4.0},
-	{"pagina": 2, "region": Rect2(0, 373, 1024, 356), "duracion": 4.5},
-	{"pagina": 2, "region": Rect2(0, 744, 497, 402), "duracion": 4.0},
-	{"pagina": 2, "region": Rect2(511, 744, 513, 402), "duracion": 4.0},
-	{"pagina": 2, "region": Rect2(0, 1160, 1024, 376), "duracion": 6.0},
-	{"pagina": 3, "region": Rect2(6, 4, 865, 578), "duracion": 5.5},
-	{"pagina": 3, "region": Rect2(884, 4, 397, 578), "duracion": 4.5},
-	{"pagina": 3, "region": Rect2(6, 596, 1274, 617), "duracion": 6.5},
-	{"pagina": 4, "region": Rect2(6, 6, 389, 384), "duracion": 4.5},
-	{"pagina": 4, "region": Rect2(400, 6, 618, 384), "duracion": 5.0},
-	{"pagina": 4, "region": Rect2(6, 395, 757, 736), "duracion": 7.5},
-	{"pagina": 4, "region": Rect2(770, 395, 248, 736), "duracion": 3.0},
-	{"pagina": 4, "region": Rect2(6, 1139, 1012, 390), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta1.png"), "duracion": 6.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta2.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta3.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta4.png"), "duracion": 4.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta5.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta6.png"), "duracion": 4.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta7.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta8.png"), "duracion": 4.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta9.png"), "duracion": 5.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta10.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta11.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta12.png"), "duracion": 4.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta13.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta14.png"), "duracion": 5.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta15.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta16.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta17.png"), "duracion": 5.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta18.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta19.png"), "duracion": 4.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta20.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta21.png"), "duracion": 5.0},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta22.png"), "duracion": 4.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta23.png"), "duracion": 5.5},
+	{"imagen": preload("res://assets/intro/Historia_Mictlán/viñeta24.png"), "duracion": 6.0},
 ]
 
 const MARGEN_MARCO := 6.0
@@ -57,7 +52,6 @@ const DURACION_SALIDA := 0.35
 @onready var temporizador: Timer = $Temporizador
 
 var _indice := -1
-var _atlas_actual: AtlasTexture
 var _duracion_actual := 0.0
 var _bloqueado := true
 var _saliendo := false
@@ -65,6 +59,7 @@ var _cambiando_panel := false
 
 
 func _ready() -> void:
+	Musica.reproducir_menu()
 	get_viewport().size_changed.connect(_ajustar_panel)
 	boton_saltar.pressed.connect(_on_saltar_pressed)
 	temporizador.timeout.connect(_on_temporizador_timeout)
@@ -90,18 +85,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_on_saltar_pressed()
 		get_viewport().set_input_as_handled()
+		return
+
+	if event.is_action_pressed("ui_accept"):
+		_saltar_panel_actual()
+		get_viewport().set_input_as_handled()
 
 
 func _mostrar_panel(indice: int) -> void:
 	_indice = indice
 	var datos: Dictionary = PANELES[indice]
-	var region: Rect2 = datos["region"]
-
-	_atlas_actual = AtlasTexture.new()
-	_atlas_actual.atlas = PAGINAS[datos["pagina"]]
-	_atlas_actual.region = region
-	_atlas_actual.filter_clip = true
-	panel_imagen.texture = _atlas_actual
+	panel_imagen.texture = datos["imagen"]
 	panel_imagen.modulate.a = 0.0
 
 	_duracion_actual = datos["duracion"]
@@ -164,6 +158,17 @@ func _avanzar_panel() -> void:
 
 	_mostrar_panel(_indice + 1)
 	_iniciar_temporizador()
+
+
+## Espacio, Enter o A: pasa al siguiente panel sin esperar la duración.
+## En el último panel termina la intro.
+func _saltar_panel_actual() -> void:
+	if _bloqueado or _saliendo or _cambiando_panel:
+		return
+	if _indice >= PANELES.size() - 1:
+		_terminar_intro()
+	else:
+		_avanzar_panel()
 
 
 func _on_saltar_pressed() -> void:

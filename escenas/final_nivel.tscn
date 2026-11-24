@@ -1,0 +1,102 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://escenas/final_nivel.gd" id="1_final"]
+[ext_resource type="Theme" path="res://assets/interfaz/tema_opciones.tres" id="2_tema"]
+[ext_resource type="Texture2D" path="res://assets/items/flor.png" id="3_flor"]
+[ext_resource type="Texture2D" path="res://assets/intro/finalDemo.png" id="4_panel_demo"]
+
+[sub_resource type="Gradient" id="Gradient_final"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(1, 0.75, 0.25, 0.35, 0.7, 0.25, 0.35, 0.12, 0.08, 0.02, 0.12, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_final"]
+gradient = SubResource("Gradient_final")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="FinalNivel" type="CanvasLayer"]
+process_mode = 3
+layer = 110
+script = ExtResource("1_final")
+
+[node name="Fondo" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.015, 0.008, 0.03, 1)
+
+[node name="Resplandor" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+modulate = Color(1, 0.8, 0.45, 0.3)
+texture = SubResource("GradientTexture2D_final")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="Centro" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Contenido" type="VBoxContainer" parent="Centro"]
+layout_mode = 2
+theme = ExtResource("2_tema")
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Titulo" type="Label" parent="Centro/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9804, 0.8275, 0.3137, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 40
+text = "EL CAMINO DE CEMPASÚCHIL"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="Centro/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 0.85)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "HAS COMPLETADO EL NIVEL 1"
+horizontal_alignment = 1
+
+[node name="Flor" type="TextureRect" parent="Centro/Contenido"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_flor")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Boton" type="Button" parent="Centro/Contenido"]
+custom_minimum_size = Vector2(320, 54)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "VOLVER AL MENÚ"
+
+[node name="Ayuda" type="Label" parent="Centro/Contenido"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 0.6)
+theme_override_font_sizes/font_size = 15
+text = "ESPACIO / A PARA VOLVER"
+horizontal_alignment = 1
+
+[node name="PanelDemo" type="TextureRect" parent="."]
+mouse_filter = 2
+texture = ExtResource("4_panel_demo")
+stretch_mode = 5

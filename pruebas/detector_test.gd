@@ -7,6 +7,9 @@ var _pausas: Array[String] = []
 var _reanudaciones: Array[String] = []
 var _fallos: Array[String] = []
 var _backend
+var _camara_original := false
+var _foco_original := true
+var _tiempo_original := 5
 
 
 func _ready() -> void:
@@ -15,8 +18,14 @@ func _ready() -> void:
 	DetectorPresencia.pausa_automatica_solicitada.connect(_on_pausa)
 	DetectorPresencia.reanudacion_automatica_solicitada.connect(_on_reanudacion)
 
-	Configuracion.set_pausa_tiempo(3)
-	Configuracion.set_pausa_camara(true)
+	# La prueba fija sus propias condiciones sin guardar la configuración
+	# del jugador en disco.
+	_camara_original = Configuracion.pausa_camara
+	_foco_original = Configuracion.pausa_foco
+	_tiempo_original = Configuracion.pausa_tiempo
+	Configuracion.pausa_camara = true
+	Configuracion.pausa_foco = true
+	Configuracion.pausa_tiempo = 3
 	DetectorPresencia.activar_en_nivel()
 
 	await _esperar(0.5)
@@ -82,8 +91,9 @@ func _ready() -> void:
 	_comprobar(_backend.esta_activo(), "cámara reactivada al reanudar")
 
 	DetectorPresencia.desactivar_en_nivel(true)
-	Configuracion.set_pausa_camara(false)
-	Configuracion.set_pausa_tiempo(5)
+	Configuracion.pausa_camara = _camara_original
+	Configuracion.pausa_foco = _foco_original
+	Configuracion.pausa_tiempo = _tiempo_original
 	if _fallos.is_empty():
 		print("PRUEBA OK: pausas=%s reanudaciones=%s" % [_pausas, _reanudaciones])
 	else:

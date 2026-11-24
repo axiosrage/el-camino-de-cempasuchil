@@ -150,6 +150,42 @@ theme_override_font_sizes/font_size = 14
 text = "MUEVE EL RATÓN O ACÉRCATE A LA CÁMARA"
 horizontal_alignment = 1
 
+[node name="MensajeCentro" type="CenterContainer" parent="Contenido"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 150.0
+offset_bottom = 260.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="Mensaje" type="PanelContainer" parent="Contenido/MensajeCentro"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("SBF_panel_hud")
+
+[node name="MargenMensaje" type="MarginContainer" parent="Contenido/MensajeCentro/Mensaje"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 10
+
+[node name="MensajeTexto" type="Label" parent="Contenido/MensajeCentro/Mensaje/MargenMensaje"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9804, 0.8275, 0.3137, 1)
+theme_override_colors/font_outline_color = Color(0.05, 0.02, 0.08, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("6_fuente")
+theme_override_font_sizes/font_size = 22
+text = "MENSAJE"
+horizontal_alignment = 1
+
 [node name="Depuracion" type="PanelContainer" parent="Contenido"]
 unique_name_in_owner = true
 visible = false

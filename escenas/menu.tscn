@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b0ath21st44hp"]
+[gd_scene load_steps=15 format=3 uid="uid://b0ath21st44hp"]
 
 [ext_resource type="Texture2D" path="res://assets/interfaz/menu/fondo.png" id="1_fondo"]
 [ext_resource type="Texture2D" path="res://assets/interfaz/menu/Titulo.png" id="2_titulo"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://escenas/menu.gd" id="5_menu"]
 [ext_resource type="PackedScene" path="res://escenas/opciones.tscn" id="6_opciones"]
 [ext_resource type="PackedScene" path="res://escenas/seleccion_partidas.tscn" id="7_seleccion"]
+[ext_resource type="PackedScene" path="res://escenas/aviso_pausa.tscn" id="8_aviso"]
 
 [sub_resource type="AtlasTexture" id="Atlas_titulo"]
 atlas = ExtResource("2_titulo")
@@ -173,6 +174,9 @@ theme_override_styles/panel = SubResource("SBF_foco")
 visible = false
 
 [node name="SeleccionPartidas" parent="." instance=ExtResource("7_seleccion")]
+visible = false
+
+[node name="AvisoPausa" parent="." instance=ExtResource("8_aviso")]
 visible = false
 
 [node name="FadeRect" type="ColorRect" parent="."]

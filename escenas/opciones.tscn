@@ -226,7 +226,7 @@ color = Color(0.9686, 0.7882, 0.2824, 0.35)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
 theme_override_font_sizes/font_size = 22
-text = "CONTROLES"
+text = "CONTROLES · TECLADO / MANDO"
 
 [node name="ControlesGrid" type="GridContainer" parent="Centro/Panel/Margen/VBox"]
 layout_mode = 2
@@ -238,7 +238,7 @@ columns = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
 theme_override_font_sizes/font_size = 18
-text = "A / D"
+text = "A / D · STICK"
 
 [node name="AccionMov" type="Label" parent="Centro/Panel/Margen/VBox/ControlesGrid"]
 layout_mode = 2
@@ -249,7 +249,7 @@ text = "MOVERSE"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
 theme_override_font_sizes/font_size = 18
-text = "ESPACIO"
+text = "ESPACIO · A"
 
 [node name="AccionSalto" type="Label" parent="Centro/Panel/Margen/VBox/ControlesGrid"]
 layout_mode = 2
@@ -260,7 +260,7 @@ text = "SALTAR"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
 theme_override_font_sizes/font_size = 18
-text = "F"
+text = "F · X"
 
 [node name="AccionLanzar" type="Label" parent="Centro/Panel/Margen/VBox/ControlesGrid"]
 layout_mode = 2
@@ -271,7 +271,7 @@ text = "LANZAR"
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9686, 0.7882, 0.2824, 1)
 theme_override_font_sizes/font_size = 18
-text = "ESC"
+text = "ESC · START"
 
 [node name="AccionPausa" type="Label" parent="Centro/Panel/Margen/VBox/ControlesGrid"]
 layout_mode = 2
@@ -284,3 +284,11 @@ custom_minimum_size = Vector2(180, 44)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "VOLVER"
+
+[node name="Foco" type="ReferenceRect" parent="."]
+visible = false
+layout_mode = 0
+mouse_filter = 2
+border_color = Color(0.9686, 0.7882, 0.2824, 0.95)
+border_width = 2.0
+editor_only = false

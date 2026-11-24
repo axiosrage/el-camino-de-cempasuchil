@@ -10,12 +10,16 @@ vidas.
 
 Prototipo jugable con:
 
-- Menú principal, introducción y selector de 3 ranuras de guardado.
+- Menú principal, introducción de 24 viñetas y selector de 3 ranuras de guardado.
 - Nivel 1 completo con checkpoints automáticos, enemigos, combate y lanzamiento de
   piedras.
 - Sistema de 3 corazones, jades recolectables y reinicio de nivel al quedarse sin vida.
 - Opciones de volumen, pantalla completa, pausa automática y pausa.
-- Sonidos de interfaz y de mundo.
+- Sonidos de interfaz y de mundo, y música de menú y de nivel con fundido cruzado.
+- Velas decorativas con brillo amarillo repartidas por todo el recorrido.
+- Flor de cempasúchil final y portal que se abre al recogerla, con pantalla
+  de final y vuelta al menú.
+- **Controles táctiles automáticos en móviles y tabletas**.
 - **Pausa automática por visión por computadora**: el juego detecta si sigues frente
   a la pantalla y se pausa solo cuando te alejas.
 
@@ -31,15 +35,81 @@ Prototipo jugable con:
 
 La escena principal es `escenas/menu.tscn`.
 
+## Escenario
+
+El fondo parallax calcula sus repeticiones a partir del ancho real del tilemap
+`Nivel`, así que sigue cubriendo todo el recorrido si el mapa se amplía. La
+decoración del suelo también se repite hasta el final del nivel: se apoya en el
+primer tile sólido de cada columna y no modifica las celdas que ya estaban
+dibujadas.
+
 ## Controles
 
-| Acción | Tecla |
-| --- | --- |
-| Moverse | `A` / `D` |
-| Saltar | `Espacio` |
-| Lanzar piedra | `F` |
-| Pausa / volver | `Esc` |
-| Panel de depuración de visión | `F3` |
+| Acción | Tecla | Mando | Móvil |
+| --- | --- | --- | --- |
+| Moverse | `A` / `D` | Stick izquierdo / D-pad | `IZQ` / `DER` |
+| Saltar | `Espacio` | A / Cruz | `SALTO` |
+| Lanzar piedra | `F` | X / Cuadrado | `LANZAR` |
+| Pausa | `Esc` | Start / Options | `PAUSA` |
+| Volver / cerrar | `Esc` | B / Círculo | Botones de la pantalla |
+| Avanzar panel de intro | `Espacio` / `Enter` / `A` | A / Cruz | `SALTAR INTRO` |
+| Saltar intro completa | `Esc` | B / Círculo | `SALTAR INTRO` |
+| Panel de depuración de visión | `F3` | — | — |
+
+El mando también funciona en los menús: stick o D-pad para navegar, `A` para
+aceptar y `B` para volver. En Opciones, el foco empieza en el control de volumen
+para poder ajustar los valores sin usar el teclado.
+
+### Controles táctiles
+
+En móviles y tabletas aparecen automáticamente cinco botones en pantalla durante
+el nivel: `IZQ` y `DER` abajo a la izquierda, `LANZAR` y `SALTO` abajo a la
+derecha, y `PAUSA` arriba a la derecha. Se muestran cuando el sistema informa de
+que hay pantalla táctil; en escritorio permanecen ocultos y no estorban.
+
+Cada botón envía exactamente la misma acción del InputMap que el teclado o el
+mando (`mov_izquierda`, `mov_derecha`, `salto`, `lanzar` y `pausa`), por lo que
+las físicas, la carga del lanzamiento y el menú de pausa funcionan igual. Se
+pueden mantener varios botones a la vez (por ejemplo, correr y saltar) y, si el
+juego se pausa con un dedo todavía apoyado, las acciones se sueltan solas.
+
+La escena está en `escenas/controles_tactiles.tscn` y se añade al nivel desde
+`escenas/nivel_1.gd`, sin modificar la escena `Nivel1.tscn`. Los menús, la intro
+y la pantalla final ya usan botones táctiles normales de Godot, así que se pueden
+pulsar directamente con el dedo.
+
+Con un panel abierto en el menú, `Espacio`, `Enter` o `A` pueden saltarlo: si el
+foco está en un botón, se activa ese botón; si está en otro control (por
+ejemplo, el volumen), el panel se cierra directamente. `B`/`Esc` siempre lo
+cierran.
+
+En la intro de cómic, `Espacio`, `Enter` o `A` avanzan al siguiente panel. `Esc`
+o `B` (o el botón `SALTAR INTRO`) saltan la intro completa.
+
+## Agua, velas y final del nivel
+
+El agua conserva su colisión sólida, igual que en `mictlan (2)`, para que la
+tabla del perro flote en la superficie. Una zona de muerte reconstruida en
+runtime cubre todas sus celdas, con 4 px extra por encima: tocar cualquier
+charca mata al jugador, también si aparece dentro de ella. Mientras el niño va
+montado en la tabla el agua no lo mata; al detenerse la tabla junto a la orilla,
+salta automáticamente a la tierra firme y vuelve a ser vulnerable. Las velas se
+reparten con una semilla fija por repisas secas, lejos del agua y de los puntos
+importantes; su llama lleva un destello amarillo pulsante.
+
+Al final del mapa están la flor de cempasúchil y el portal. El portal empieza
+sellado y avisa si se intenta usar antes de tiempo. Al recoger la flor se
+registra en la partida guardada, el portal se ilumina y se abre. Al entrar
+aparece primero el panel `assets/intro/finalDemo.png`; se puede avanzar con
+`Espacio`, `Enter` o `A`, o esperar a que termine su tiempo. Después aparece la
+pantalla `EL CAMINO DE CEMPASÚCHIL`, desde la que se vuelve al menú.
+
+## Música
+
+Hay dos pistas en `assets/audio/`: `musica menu.mp3` suena en el menú y en la
+intro, y `musica del juego.mp3` en el nivel. El autoload `Musica` las reproduce
+en bucle y hace un fundido cruzado de un segundo al cambiar de escena. Sigue
+sonando mientras el juego está en pausa, incluida la pantalla final.
 
 ## Pausa automática (visión por computadora)
 
@@ -58,8 +128,8 @@ y está activada por defecto.
 | Linux instalado | `CameraServer` (V4L2) y detección de movimiento | 0.8 s de movimiento |
 | Windows | Solo pérdida de foco | 0.4 s al recuperar el foco |
 
-- Cualquier acción manual (tecla `Esc`, botones del menú) convierte la pausa
-  automática en manual.
+- Cualquier acción manual (tecla `Esc`, `Start` del mando, botones del menú)
+  convierte la pausa automática en manual.
 - La cámara se apaga al pausar manualmente, al salir del nivel o al desactivar
   la opción. Durante la pausa automática sigue encendida para detectar el
   regreso.
@@ -72,16 +142,30 @@ y está activada por defecto.
 envían imágenes de la cámara. En web, MediaPipe y el modelo BlazeFace se
 empaquetan dentro del build y se cargan solo al activar la opción.
 
+### Aviso al abrir el juego
+
+La primera vez que se abre el menú en cada sesión aparece el aviso
+`PAUSA AUTOMÁTICA`. Explica que el juego puede pausarse por la cámara (Linux y
+web) o por pérdida de foco (Windows) y ofrece dos botones:
+
+- `ENTENDIDO` (`Espacio` / `A` / `Enter`) cierra el aviso y devuelve el foco al
+  menú.
+- `VER OPCIONES` abre directamente el panel de Opciones; al cerrarlo, el foco
+  vuelve al menú.
+
+El aviso no se repite al volver al menú desde una partida, no se guarda en
+`configuracion.cfg` y vuelve a aparecer la próxima vez que se inicie el juego.
+
 ## Estructura del proyecto
 
 ```text
 assets/       Recursos que carga el juego (audio, sprites, tilesets, interfaz).
 escenas/      Escenas .tscn y sus scripts .gd.
-autoload/     Singletons: estado de partida, configuración, sonidos y detector de presencia.
+autoload/     Singletons: estado de partida, configuración, sonidos, música y detector de presencia.
 autoload/presencia/  Backends de cámara para web, Linux y plataformas sin cámara.
 web/          Detector JS y MediaPipe para la exportación web (ignorado por Godot).
 herramientas/ Script de exportación web y HTML de inclusión.
-pruebas/      Escenas y backends falsos para probar la pausa automática.
+pruebas/      Escenas y backends falsos para probar controles, pausa, final y música.
 materiales/   Arte fuente editable (.ase, .psd, packs, fuentes completas).
 docs/         Créditos y documentación.
 exports/      Salidas de exportación (ignorado por git).
@@ -97,6 +181,11 @@ mediante `exclude_filter`; no forma parte de los builds publicados.
 Las partidas se guardan en `user://partidas/ranura_1.json`, `ranura_2.json` y
 `ranura_3.json`. Cada ranura guarda nivel, posición, vida, jades y checkpoint. Solo se
 escribe en la ranura activa.
+
+El nivel tiene puntos de guardado fijos repartidos en los tramos seguros. Al perder un
+corazón se reaparece en el último punto alcanzado, conservando la vida restante, los
+jades y la flor. Solo al perder el tercer corazón se reinicia el nivel completo. Las
+posiciones se pueden ajustar en `PUNTOS_GUARDADO`, en `escenas/nivel_1.gd`.
 
 ## Exportación
 
@@ -125,7 +214,38 @@ del juego no se ve afectado.
 Si el navegador bloquea la cámara dentro del iframe de itch.io, abre el juego en una
 pestaña nueva desde el botón de pantalla completa o el enlace de la página.
 
-## Pruebas de la pausa automática
+## Pruebas
+
+### Controles táctiles
+
+```bash
+godot --headless --path . pruebas/controles_tactiles_test.tscn
+```
+
+Comprueba que el nivel crea los cinco botones, que mantienen y sueltan las
+acciones del InputMap, que mueven al jugador real, que permiten pulsar dos a la
+vez y que `PAUSA` abre y cierra el menú de pausa.
+
+### Agua, velas, final y música
+
+```bash
+godot --headless --path . pruebas/agua_test.tscn
+godot --headless --path . pruebas/perro_agua_test.tscn
+godot --headless --path . pruebas/checkpoints_test.tscn
+godot --headless --path . pruebas/vela_test.tscn
+godot --headless --path . pruebas/final_test.tscn
+godot --headless --path . pruebas/musica_test.tscn
+```
+
+Comprueban, en orden, que el agua cubre todas sus celdas y conserva su colisión
+sólida; que el niño se monta en la tabla, cruza sin ahogarse y salta a tierra
+firme; que los puntos de guardado son seguros y que solo se reinicia el nivel al
+perder el último corazón; que las velas se apoyan en suelo seco y brillan; que el
+portal solo se abre con la flor, que al entrar aparece primero el panel
+`finalDemo` y después el mensaje final con el botón de volver al menú; y que las
+dos pistas de música hacen el fundido cruzado en bucle.
+
+### Pausa automática
 
 La lógica del detector se puede probar sin cámara, con un backend falso:
 
@@ -134,7 +254,43 @@ godot --headless --path . pruebas/detector_test.tscn
 ```
 
 La prueba simula ausencia, entrada de teclado, pérdida de foco y apagado/reactivación
-de la cámara. `pruebas/` está excluido de los presets de exportación.
+de la cámara.
+
+### Mando
+
+El soporte de mando se prueba sin hardware, enviando eventos de gamepad al
+InputMap:
+
+```bash
+godot --headless --path . pruebas/mando_test.tscn
+godot --headless --path . pruebas/nivel_mando_test.tscn
+```
+
+La primera comprueba el mapa, la navegación de foco y la pausa; la segunda usa
+el jugador real de `Nivel1` para verificar D-pad, stick, salto y pausa con Start.
+`pruebas/` está excluido de los presets de exportación.
+
+### Aviso inicial
+
+```bash
+godot --headless --path . pruebas/aviso_pausa_test.tscn
+```
+
+Comprueba que el aviso aparece una sola vez por sesión, que el foco queda
+atrapado entre sus dos botones, que el menú no recibe foco mientras está
+abierto, que `Espacio`, `A` y `B` lo cierran, que `Espacio` también salta
+Opciones y que `VER OPCIONES` abre Opciones y devuelve el foco al menú al
+cerrarlas.
+
+### Intro
+
+```bash
+godot --headless --path . pruebas/intro_test.tscn
+```
+
+Comprueba que la intro carga las 24 viñetas de `assets/intro/Historia_Mictlán`,
+que `Espacio`, `A` y `Enter` avanzan al siguiente panel y que `B` salta la intro
+completa sin que el botón `SALTAR INTRO` capture esas teclas.
 
 ## Créditos
 

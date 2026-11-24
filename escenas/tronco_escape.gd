@@ -46,7 +46,7 @@ func _physics_process(delta: float) -> void:
 func _on_zona_jinete_body_entered(body: Node2D) -> void:
 	if not (body is Player):
 		return
-	if body.muerto:
+	if body.muerto or body.ignorar_agua:
 		return
 
 	jinete = body
@@ -61,6 +61,11 @@ func _on_zona_jinete_body_exited(body: Node2D) -> void:
 func _soltar_jinete() -> void:
 	if is_instance_valid(jinete):
 		jinete.desmontar_de_tronco()
+		# La tabla se detiene poco antes de la orilla. El salto hacia delante
+		# deja al niño sobre el suelo firme en lugar de soltarlo en el agua.
+		jinete.ignorar_agua = true
+		jinete.velocity = Vector2(150.0, -260.0)
+		_mantener_derecha(true)
 	jinete = null
 	tiempo_sin_avanzar = 0.0
 
@@ -69,3 +74,10 @@ func impulsar_perro() -> void:
 	var perro := get_parent().get_node_or_null("Perro")
 	if perro and perro.has_method("impulsar"):
 		perro.impulsar()
+
+
+func _mantener_derecha(presionada: bool) -> void:
+	var evento := InputEventAction.new()
+	evento.action = "mov_derecha"
+	evento.pressed = presionada
+	Input.parse_input_event(evento)

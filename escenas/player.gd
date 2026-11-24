@@ -18,6 +18,8 @@ var causa_muerte: String = "dano"
 var montado_en_tronco: bool = false
 var tronco_actual: RigidBody2D = null
 var offset_tronco: float = 0.0
+# Durante el salto final desde la tabla a la orilla el agua no debe matar.
+var ignorar_agua: bool = false
 
 
 func _ready() -> void:
@@ -58,6 +60,10 @@ func morir_en_agua() -> void:
 		# Si el agua consume el último corazón, el nivel reproduce
 		# GAME OVER al reiniciarse en lugar de encimar ambos sonidos.
 		Sonidos.reproducir_ui("perder_ahogarse", -3.0)
+
+	# Al ahogarse el cuerpo se detiene. El nivel añade además una superficie
+	# física de apoyo sobre el agua para que no siga hundiéndose.
+	velocity = Vector2.ZERO
 	morir("agua")
 
 
