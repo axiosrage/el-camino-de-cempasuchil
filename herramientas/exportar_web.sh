@@ -20,6 +20,8 @@ echo "Exportando preset Web…"
 
 echo "Copiando detector de presencia y MediaPipe…"
 cp "$RAIZ/web/presencia_camara.js" "$DESTINO/"
+cp "$RAIZ/web/pantalla_completa.js" "$DESTINO/"
+cp "$RAIZ/web/salida_web.js" "$DESTINO/"
 cp "$RAIZ/web/mediapipe/vision_bundle.js" "$DESTINO/mediapipe/"
 cp "$RAIZ/web/mediapipe/blaze_face_short_range.tflite" "$DESTINO/mediapipe/"
 cp "$RAIZ/web/mediapipe/LICENCIA-APACHE-2.0.txt" "$DESTINO/mediapipe/"

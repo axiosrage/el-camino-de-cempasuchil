@@ -108,20 +108,88 @@
     ctx = canvas.getContext("2d");
   }
 
+  function puntuarDispositivo(device) {
+    const nombre = String(device.label || "").toLowerCase();
+    let puntos = 0;
+    if (
+      /usb|external|externa|webcam|logitech|capture|hdmi/.test(nombre)
+    ) {
+      puntos += 100;
+    }
+    if (/integr|built|internal|facetime|isight/.test(nombre)) {
+      puntos -= 60;
+    }
+    return puntos;
+  }
+
   async function abrirCamara() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw Object.assign(new Error("getUserMedia no está disponible"), {
         name: "NotFoundError",
       });
     }
-    return navigator.mediaDevices.getUserMedia({
+
+    const base = {
+      width: { ideal: 320 },
+      height: { ideal: 240 },
+      frameRate: { ideal: 15, max: 30 },
+    };
+    let deviceId = "";
+
+    // Si el navegador ya dio permiso, los nombres permiten elegir una
+    // cámara USB/externa en lugar de la integrada del equipo.
+    try {
+      const dispositivos = await navigator.mediaDevices.enumerateDevices();
+      const camaras = dispositivos.filter(
+        (device) => device.kind === "videoinput" && device.deviceId
+      );
+      if (camaras.length > 1) {
+        camaras.sort((a, b) => puntuarDispositivo(b) - puntuarDispositivo(a));
+        deviceId = camaras[0].deviceId;
+      }
+    } catch (error) {
+      // Algunos navegadores solo enumeran dispositivos tras el permiso.
+    }
+
+    const restricciones = {
       audio: false,
-      video: {
-        facingMode: "user",
-        width: { ideal: 320 },
-        height: { ideal: 240 },
-        frameRate: { ideal: 15, max: 30 },
-      },
+      video: Object.assign({}, base),
+    };
+    if (deviceId) {
+      restricciones.video.deviceId = { ideal: deviceId };
+    }
+
+    try {
+      return await navigator.mediaDevices.getUserMedia(restricciones);
+    } catch (error) {
+      const nombre = (error && error.name) || "";
+      if (
+        deviceId &&
+        (nombre === "OverconstrainedError" || nombre === "NotFoundError")
+      ) {
+        return navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: base,
+        });
+      }
+      throw error;
+    }
+  }
+
+  function vigilarStream() {
+    if (!stream) {
+      return;
+    }
+    stream.getVideoTracks().forEach(function (track) {
+      track.addEventListener("ended", function () {
+        if (!activo) {
+          return;
+        }
+        detenerStream();
+        activo = false;
+        publicar("solicitando", "Cámara desconectada. Buscando otra…");
+        iniciar();
+      });
     });
   }
 
@@ -156,6 +224,7 @@
 
       if (!stream) {
         stream = await abrirCamara();
+        vigilarStream();
       }
       estado.permiso = "concedido";
       video.srcObject = stream;

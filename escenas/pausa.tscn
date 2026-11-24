@@ -100,6 +100,12 @@ custom_minimum_size = Vector2(0, 46)
 theme_override_font_sizes/font_size = 22
 text = "Ir al menú"
 
+[node name="Salir" type="Button" parent="Centro/Panel/Margen/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 46)
+theme_override_font_sizes/font_size = 22
+text = "Salir"
+
 [node name="Ayuda" type="Label" parent="Centro/Panel/Margen/VBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.66, 0.6, 1)

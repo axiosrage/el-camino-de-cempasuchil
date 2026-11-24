@@ -218,7 +218,7 @@ func _on_opciones_pressed() -> void:
 func _on_salir_pressed() -> void:
 	if _transicionando:
 		return
-	get_tree().quit()
+	SalidaWeb.salir()
 
 
 func _abrir_seleccion(modo_nueva: bool) -> void:

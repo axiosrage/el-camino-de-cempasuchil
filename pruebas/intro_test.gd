@@ -37,6 +37,14 @@ func _ready() -> void:
 		_intro.boton_saltar.focus_mode == Control.FOCUS_NONE,
 		"el botón SALTAR INTRO no captura Espacio/A"
 	)
+	_comprobar(
+		_intro.boton_siguiente.focus_mode == Control.FOCUS_NONE,
+		"el botón SIGUIENTE no captura Espacio/A"
+	)
+	_comprobar(
+		_intro.zona_toque != null,
+		" existe la zona táctil sobre la viñeta"
+	)
 
 	await _pulsar_tecla(KEY_SPACE)
 	await get_tree().create_timer(0.3).timeout
@@ -54,6 +62,18 @@ func _ready() -> void:
 	await get_tree().create_timer(0.3).timeout
 	_comprobar(_intro._indice == 3, "ENTER pasa al panel 4")
 	_comprobar(not _intro._saliendo, "la intro sigue activa tras avanzar")
+
+	_intro.boton_siguiente.pressed.emit()
+	await get_tree().create_timer(0.3).timeout
+	_comprobar(_intro._indice == 4, "el botón táctil pasa al panel 5")
+
+	var toque := InputEventScreenTouch.new()
+	toque.index = 0
+	toque.position = Vector2(400, 200)
+	toque.pressed = true
+	_intro._on_zona_toque(toque)
+	await get_tree().create_timer(0.3).timeout
+	_comprobar(_intro._indice == 5, "tocar la viñeta pasa al panel 6")
 
 	await _pulsar_boton(JOY_BUTTON_B)
 	await get_tree().process_frame

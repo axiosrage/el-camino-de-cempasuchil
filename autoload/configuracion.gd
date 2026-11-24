@@ -11,6 +11,7 @@ const ANCHO_DEFECTO := 1152
 const ALTO_DEFECTO := 648
 const TIEMPOS_PAUSA := [3, 5, 10, 20]
 const TIEMPO_PAUSA_DEFECTO := 5
+const CLAVE_PANTALLA_ELEGIDA := "pantalla_completa_elegida"
 
 var volumen: float = VOLUMEN_DEFECTO
 var pantalla_completa: bool = false
@@ -21,11 +22,14 @@ var pausa_foco: bool = true
 var pausa_tiempo: int = TIEMPO_PAUSA_DEFECTO
 
 var _hay_config: bool = false
+var _pantalla_elegida: bool = false
+var _iniciando: bool = true
 
 
 func _ready() -> void:
 	cargar()
-	aplicar()
+	aplicar(false)
+	_iniciando = false
 
 
 func cargar() -> void:
@@ -33,11 +37,24 @@ func cargar() -> void:
 	var error := config.load(RUTA_CONFIG)
 	if error != OK:
 		_hay_config = false
+		_pantalla_elegida = false
+		pantalla_completa = _es_pc()
 		return
 
 	_hay_config = true
 	volumen = clampf(float(config.get_value("audio", "volumen", VOLUMEN_DEFECTO)), 0.0, 1.0)
-	pantalla_completa = bool(config.get_value("video", "pantalla_completa", false))
+
+	_pantalla_elegida = bool(config.get_value("video", CLAVE_PANTALLA_ELEGIDA, false))
+	var valor_guardado = config.get_value("video", "pantalla_completa", null)
+	if valor_guardado == null:
+		pantalla_completa = _es_pc()
+	else:
+		pantalla_completa = bool(valor_guardado)
+		# Las versiones anteriores guardaban el valor por defecto sin que el
+		# jugador lo eligiera: en PC arrancamos en pantalla completa.
+		if not _pantalla_elegida and _es_pc():
+			pantalla_completa = true
+
 	ventana_ancho = clampi(int(config.get_value("video", "ventana_ancho", ANCHO_DEFECTO)), 640, 7680)
 	ventana_alto = clampi(int(config.get_value("video", "ventana_alto", ALTO_DEFECTO)), 360, 4320)
 	pausa_camara = bool(config.get_value("pausa", "camara", false))
@@ -51,6 +68,7 @@ func guardar() -> void:
 	var config := ConfigFile.new()
 	config.set_value("audio", "volumen", volumen)
 	config.set_value("video", "pantalla_completa", pantalla_completa)
+	config.set_value("video", CLAVE_PANTALLA_ELEGIDA, _pantalla_elegida)
 	config.set_value("video", "ventana_ancho", ventana_ancho)
 	config.set_value("video", "ventana_alto", ventana_alto)
 	config.set_value("pausa", "camara", pausa_camara)
@@ -61,9 +79,9 @@ func guardar() -> void:
 		push_warning("No se pudo guardar la configuración (error %d)" % error)
 
 
-func aplicar() -> void:
+func aplicar(desde_usuario: bool = true) -> void:
 	aplicar_volumen()
-	aplicar_pantalla()
+	aplicar_pantalla(desde_usuario)
 
 
 func set_volumen(valor: float) -> void:
@@ -76,7 +94,8 @@ func set_pantalla_completa(activa: bool) -> void:
 	if activa == pantalla_completa:
 		return
 	pantalla_completa = activa
-	aplicar_pantalla()
+	_pantalla_elegida = true
+	aplicar_pantalla(true)
 	guardar()
 
 
@@ -114,8 +133,15 @@ func aplicar_volumen() -> void:
 	AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(volumen, 0.001)))
 
 
-func aplicar_pantalla() -> void:
+func aplicar_pantalla(desde_usuario: bool = true) -> void:
 	if DisplayServer.get_name() == "headless":
+		return
+
+	_notificar_pantalla_web(pantalla_completa)
+
+	# El navegador solo permite pedir pantalla completa desde una acción del
+	# jugador. Al cargar la página avisamos al script web, pero no la pedimos.
+	if _iniciando and not desde_usuario and OS.has_feature("web"):
 		return
 
 	var modo := DisplayServer.window_get_mode()
@@ -142,3 +168,18 @@ func aplicar_pantalla() -> void:
 		DisplayServer.window_set_size(tamano)
 		var pantalla := DisplayServer.screen_get_size()
 		DisplayServer.window_set_position((pantalla - tamano) / 2)
+
+
+func _es_pc() -> bool:
+	return not OS.has_feature("web") and DisplayServer.get_name() != "headless"
+
+
+## En web, el navegador reserva Esc para salir de pantalla completa. El script
+## web mantiene el modo mientras la opción siga activa en Ajustes.
+func _notificar_pantalla_web(activa: bool) -> void:
+	if not OS.has_feature("web"):
+		return
+
+	var valor := "true" if activa else "false"
+	var codigo := "window.__mictlanPantallaCompletaDeseada = %s; if (window.PantallaCompletaWeb) window.PantallaCompletaWeb.notificar(%s);" % [valor, valor]
+	JavaScriptBridge.eval(codigo)

@@ -15,6 +15,8 @@ extends CharacterBody2D
 var activo = false
 var en_rango = false
 var yendose = false
+# Al reaparecer con el jugador, el perro ignora la zona de despedida.
+var mantener_con_jugador: bool = false
 var direccion_salida: float = 1.0
 var player: CharacterBody2D = null
 var tiempo_impulso: float = 0.0
@@ -129,6 +131,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 
 func _on_desaparecer_perro_body_entered(body: Node2D) -> void:
+	if mantener_con_jugador:
+		return
 	# Funciona tanto si el Area2D detecta al propio perro como si detecta al jugador
 	if body == self or body == player:
 		if absf(velocity.x) > 0.1:

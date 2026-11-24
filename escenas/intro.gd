@@ -3,7 +3,8 @@ extends Control
 ## Intro de cómic: muestra las viñetas de assets/intro/Historia_Mictlán.
 ## Cada imagen es ya un panel completo en 16:9, así que no hay que recortar
 ## páginas. Avanza sola. Espacio, Enter o A saltan al siguiente panel; Esc, B
-## o el botón «SALTAR INTRO» saltan la intro completa.
+## o el botón «SALTAR INTRO» saltan la intro completa. En web y móvil también
+## se puede tocar la viñeta o «TOCA PARA CONTINUAR» para avanzar de panel.
 
 signal panel_mostrado(indice: int)
 signal intro_terminada
@@ -45,8 +46,11 @@ const DURACION_SALIDA := 0.35
 @onready var area_panel: Control = $AreaPanel
 @onready var marco: Panel = $AreaPanel/Marco
 @onready var panel_imagen: TextureRect = $AreaPanel/PanelImagen
+@onready var zona_toque: Control = $AreaPanel/ZonaToque
 @onready var contador: Label = $HUD/HBox/Contador
 @onready var barra: ProgressBar = $HUD/HBox/Barra
+@onready var ayuda: Label = $HUD/HBox/Ayuda
+@onready var boton_siguiente: Button = $HUD/HBox/Siguiente
 @onready var boton_saltar: Button = $HUD/HBox/Saltar
 @onready var fade_rect: ColorRect = $FadeRect
 @onready var temporizador: Timer = $Temporizador
@@ -61,8 +65,19 @@ var _cambiando_panel := false
 func _ready() -> void:
 	Musica.reproducir_menu()
 	get_viewport().size_changed.connect(_ajustar_panel)
+	boton_siguiente.pressed.connect(_on_siguiente_pressed)
 	boton_saltar.pressed.connect(_on_saltar_pressed)
+	zona_toque.gui_input.connect(_on_zona_toque)
 	temporizador.timeout.connect(_on_temporizador_timeout)
+
+	# En web y móvil priorizamos controles grandes y touchables.
+	var tactil := OS.has_feature("web") or OS.has_feature("mobile")
+	boton_siguiente.visible = tactil
+	zona_toque.mouse_filter = Control.MOUSE_FILTER_STOP if tactil else Control.MOUSE_FILTER_IGNORE
+	ayuda.visible = not tactil
+	if tactil:
+		boton_saltar.text = "SALTAR INTRO"
+
 	barra.max_value = 1.0
 	barra.value = 0.0
 	fade_rect.modulate.a = 1.0
@@ -169,6 +184,17 @@ func _saltar_panel_actual() -> void:
 		_terminar_intro()
 	else:
 		_avanzar_panel()
+
+
+func _on_siguiente_pressed() -> void:
+	_saltar_panel_actual()
+
+
+## Un toque en la viñeta equivale a «siguiente panel».
+func _on_zona_toque(evento: InputEvent) -> void:
+	if evento is InputEventScreenTouch and evento.pressed:
+		_saltar_panel_actual()
+		get_viewport().set_input_as_handled()
 
 
 func _on_saltar_pressed() -> void:

@@ -82,6 +82,15 @@ expand_mode = 1
 stretch_mode = 5
 texture = ExtResource("3_p1")
 
+[node name="ZonaToque" type="Control" parent="AreaPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
 [node name="HUD" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 12
@@ -127,8 +136,20 @@ theme_override_font_sizes/font_size = 14
 text = "ESPACIO / ENTER / A · SIGUIENTE"
 vertical_alignment = 1
 
+[node name="Siguiente" type="Button" parent="HUD/HBox"]
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.9608, 0.902, 0.7843, 1)
+theme_override_colors/font_hover_color = Color(0.9686, 0.7882, 0.2824, 1)
+theme_override_colors/font_pressed_color = Color(0.9686, 0.7882, 0.2824, 1)
+theme_override_font_sizes/font_size = 17
+text = "TOCA PARA CONTINUAR"
+flat = true
+
 [node name="Saltar" type="Button" parent="HUD/HBox"]
-custom_minimum_size = Vector2(210, 0)
+custom_minimum_size = Vector2(210, 48)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2

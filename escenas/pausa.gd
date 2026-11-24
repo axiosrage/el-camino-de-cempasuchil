@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var boton_reanudar: Button = $Centro/Panel/Margen/VBox/Reanudar
 @onready var boton_opciones: Button = $Centro/Panel/Margen/VBox/Opciones
 @onready var boton_menu: Button = $Centro/Panel/Margen/VBox/Menu
+@onready var boton_salir: Button = $Centro/Panel/Margen/VBox/Salir
 @onready var titulo: Label = $Centro/Panel/Margen/VBox/Titulo
 @onready var motivo: Label = $Centro/Panel/Margen/VBox/Motivo
 @onready var reanudacion: Label = $Centro/Panel/Margen/VBox/Reanudacion
@@ -16,10 +17,11 @@ var _pausa_automatica: bool = false
 
 func _ready() -> void:
 	visible = false
-	_botones = [boton_reanudar, boton_opciones, boton_menu]
+	_botones = [boton_reanudar, boton_opciones, boton_menu, boton_salir]
 	boton_reanudar.pressed.connect(_on_reanudar_pressed)
 	boton_opciones.pressed.connect(_on_opciones_pressed)
 	boton_menu.pressed.connect(_on_menu_pressed)
+	boton_salir.pressed.connect(_on_salir_pressed)
 	opciones_panel.cerrado.connect(_on_opciones_cerrado)
 	DetectorPresencia.pausa_automatica_solicitada.connect(_on_pausa_automatica)
 	DetectorPresencia.reanudacion_automatica_solicitada.connect(_on_reanudacion_automatica)
@@ -178,6 +180,18 @@ func _on_menu_pressed() -> void:
 		nivel.guardar_partida_actual(true)
 
 	get_tree().change_scene_to_file("res://escenas/menu.tscn")
+
+
+func _on_salir_pressed() -> void:
+	get_tree().paused = false
+	DetectorPresencia.desactivar_en_nivel(true)
+
+	# Guardamos el checkpoint antes de cerrar el juego.
+	var nivel := get_parent()
+	if nivel != null and nivel.has_method("guardar_partida_actual"):
+		nivel.guardar_partida_actual(true)
+
+	SalidaWeb.salir()
 
 
 func _on_pausa_automatica(motivo_pausa: String) -> void:

@@ -68,6 +68,7 @@ var _portal_final
 var _final_nivel
 var _velas: Node2D
 var _controles_tactiles
+var _perro_acompañante: CharacterBody2D
 var _terminando: bool = false
 
 
@@ -421,6 +422,7 @@ func _aplicar_estado_guardado() -> void:
 		player.global_position = punto
 		player.velocity = Vector2.ZERO
 		EstadoJuego.checkpoint_posicion = punto
+		_colocar_perro_en_checkpoint(punto)
 
 	EstadoJuego.partida_cargada = false
 	EstadoJuego.respawn_en_checkpoint = false
@@ -433,6 +435,34 @@ func _aplicar_estado_guardado() -> void:
 		EstadoJuego.checkpoint_posicion = _posicion_inicial
 
 	_sincronizar_indice_checkpoint()
+
+
+## Tras una muerte o una carga, el perro debe reaparecer con el niño y no
+## quedarse en su sitio del principio del nivel. Se busca un punto firme
+## cercano al checkpoint y se reactiva el seguimiento.
+func _colocar_perro_en_checkpoint(punto: Vector2) -> void:
+	_perro_acompañante = get_node_or_null("PerroAcompañante") as CharacterBody2D
+	if not is_instance_valid(_perro_acompañante):
+		return
+
+	var destino := punto
+	for desplazamiento in [-28.0, 28.0, -44.0, 44.0, -16.0, 16.0]:
+		var base := punto + Vector2(desplazamiento, 0.0)
+		var candidato := _buscar_punto_seguro(base)
+		if candidato.distance_to(base) < 1.0:
+			destino = candidato
+			break
+
+	_perro_acompañante.global_position = destino
+	_perro_acompañante.velocity = Vector2.ZERO
+	_perro_acompañante.player = player
+	_perro_acompañante.activo = true
+	_perro_acompañante.en_rango = true
+	_perro_acompañante.yendose = false
+	_perro_acompañante.tiempo_impulso = 0.0
+	# Si el checkpoint está junto a la zona de despedida, no debe irse.
+	_perro_acompañante.mantener_con_jugador = true
+	_perro_acompañante.visible = true
 
 
 func _preparar_hud() -> void:

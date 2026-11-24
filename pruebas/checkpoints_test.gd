@@ -81,6 +81,37 @@ func _ready() -> void:
 	_nivel.queue_free()
 	await get_tree().process_frame
 
+	# Al recargar desde un checkpoint (muerte pequeña o partida guardada),
+	# el perro debe aparecer junto al niño y seguir acompañándolo.
+	EstadoJuego.reiniciar_estado()
+	EstadoJuego.slot_activo = 0
+	EstadoJuego.partida_cargada = true
+	EstadoJuego.checkpoint_posicion = puntos[3]
+	var recargado = NIVEL.instantiate()
+	add_child(recargado)
+	await get_tree().process_frame
+	await get_tree().physics_frame
+
+	var jugador_recargado = recargado.get_node("%Player")
+	var perro = recargado.get_node("PerroAcompañante")
+	_comprobar(
+		jugador_recargado.global_position.distance_to(puntos[3]) < 2.0,
+		"el jugador reaparece en el checkpoint"
+	)
+	_comprobar(
+		absf(perro.global_position.x - jugador_recargado.global_position.x) < 80.0,
+		"el perro reaparece junto al jugador"
+	)
+	_comprobar(
+		bool(recargado.call("_es_punto_seguro", perro.global_position)),
+		"el perro reaparece sobre suelo firme y fuera del agua"
+	)
+	_comprobar(bool(perro.get("activo")) and perro.get("player") == jugador_recargado, "el perro sigue al jugador tras reaparecer")
+	_comprobar(bool(perro.get("mantener_con_jugador")), "el perro no se despide tras reaparecer")
+
+	recargado.queue_free()
+	await get_tree().process_frame
+
 	if _fallos.is_empty():
 		print("PRUEBA CHECKPOINTS OK")
 	else:

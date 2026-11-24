@@ -14,7 +14,8 @@ Prototipo jugable con:
 - Nivel 1 completo con checkpoints automáticos, enemigos, combate y lanzamiento de
   piedras.
 - Sistema de 3 corazones, jades recolectables y reinicio de nivel al quedarse sin vida.
-- Opciones de volumen, pantalla completa, pausa automática y pausa.
+- Opciones de volumen, pantalla completa, pausa automática y pausa. En PC el juego
+  arranca en pantalla completa; si lo desactivas en Ajustes, se respeta la elección.
 - Sonidos de interfaz y de mundo, y música de menú y de nivel con fundido cruzado.
 - Velas decorativas con brillo amarillo repartidas por todo el recorrido.
 - Flor de cempasúchil final y portal que se abre al recogerla, con pantalla
@@ -52,8 +53,9 @@ dibujadas.
 | Lanzar piedra | `F` | X / Cuadrado | `LANZAR` |
 | Pausa | `Esc` | Start / Options | `PAUSA` |
 | Volver / cerrar | `Esc` | B / Círculo | Botones de la pantalla |
-| Avanzar panel de intro | `Espacio` / `Enter` / `A` | A / Cruz | `SALTAR INTRO` |
+| Avanzar panel de intro | `Espacio` / `Enter` / `A` | A / Cruz | `TOCA PARA CONTINUAR` o tocar la viñeta |
 | Saltar intro completa | `Esc` | B / Círculo | `SALTAR INTRO` |
+| Salir del juego | Menú → `Salir` | Menú → `Salir` | Menú o pausa → `Salir` |
 | Panel de depuración de visión | `F3` | — | — |
 
 El mando también funciona en los menús: stick o D-pad para navegar, `A` para
@@ -84,7 +86,9 @@ ejemplo, el volumen), el panel se cierra directamente. `B`/`Esc` siempre lo
 cierran.
 
 En la intro de cómic, `Espacio`, `Enter` o `A` avanzan al siguiente panel. `Esc`
-o `B` (o el botón `SALTAR INTRO`) saltan la intro completa.
+o `B` (o el botón `SALTAR INTRO`) saltan la intro completa. En web y móvil
+aparece además `TOCA PARA CONTINUAR` y se puede tocar directamente la viñeta para
+pasar al panel siguiente sin esperar el temporizador.
 
 ## Agua, velas y final del nivel
 
@@ -135,8 +139,13 @@ y está activada por defecto.
   regreso.
 - En Linux se recomienda usar 10 s si hay movimiento de fondo, porque la
   detección es por movimiento y no por rostro.
+- Si conectas una **cámara externa USB**, el backend de Linux la prefiere sobre
+  la cámara integrada (revisa el nombre del dispositivo y su posición) y vuelve
+  a buscar feeds si deja de llegar imagen. El backend web también prioriza
+  dispositivos externos cuando el navegador expone sus nombres, y reanuda la
+  captura si el dispositivo se desconecta.
 - `F3` muestra un panel con el estado del detector, la presencia, la latencia y
-  la cuenta atrás.
+  la cuenta atrás. En Linux el nombre del backend incluye la cámara elegida.
 
 **Privacidad:** todo el procesamiento ocurre en el equipo. No se guardan ni se
 envían imágenes de la cámara. En web, MediaPipe y el modelo BlazeFace se
@@ -161,9 +170,9 @@ El aviso no se repite al volver al menú desde una partida, no se guarda en
 ```text
 assets/       Recursos que carga el juego (audio, sprites, tilesets, interfaz).
 escenas/      Escenas .tscn y sus scripts .gd.
-autoload/     Singletons: estado de partida, configuración, sonidos, música y detector de presencia.
+autoload/     Singletons: estado de partida, configuración, salida, sonidos, música y detector de presencia.
 autoload/presencia/  Backends de cámara para web, Linux y plataformas sin cámara.
-web/          Detector JS y MediaPipe para la exportación web (ignorado por Godot).
+web/          Detector JS, control de pantalla completa, salida web y MediaPipe para la exportación (ignorado por Godot).
 herramientas/ Script de exportación web y HTML de inclusión.
 pruebas/      Escenas y backends falsos para probar controles, pausa, final y música.
 materiales/   Arte fuente editable (.ase, .psd, packs, fuentes completas).
@@ -184,8 +193,10 @@ escribe en la ranura activa.
 
 El nivel tiene puntos de guardado fijos repartidos en los tramos seguros. Al perder un
 corazón se reaparece en el último punto alcanzado, conservando la vida restante, los
-jades y la flor. Solo al perder el tercer corazón se reinicia el nivel completo. Las
-posiciones se pueden ajustar en `PUNTOS_GUARDADO`, en `escenas/nivel_1.gd`.
+jades y la flor. El perro acompañante reaparece al lado del niño en ese mismo punto y
+sigue acompañándolo. Solo al perder el tercer corazón se reinicia el nivel completo,
+con el perro en su sitio inicial. Las posiciones se pueden ajustar en `PUNTOS_GUARDADO`,
+en `escenas/nivel_1.gd`.
 
 ## Exportación
 
@@ -206,10 +217,23 @@ Para la versión web, usa el script:
 ./herramientas/exportar_web.sh
 ```
 
-El script exporta el preset `Web` y copia `web/presencia_camara.js` y la carpeta
-`web/mediapipe/` (runtime, modelo y licencia) junto a `index.html`. El modelo se
-carga de forma diferida la primera vez que se activa la cámara, así que el arranque
-del juego no se ve afectado.
+El script exporta el preset `Web` y copia `web/presencia_camara.js`,
+`web/pantalla_completa.js`, `web/salida_web.js` y la carpeta `web/mediapipe/`
+(runtime, modelo y licencia) junto a `index.html`. El modelo se carga de forma
+diferida la primera vez que se activa la cámara, así que el arranque del juego
+no se ve afectado.
+
+En navegadores que lo permiten, `Esc` abre el menú sin sacar de pantalla completa:
+`pantalla_completa.js` usa Keyboard Lock para capturar la tecla. Si el navegador no
+ofrece esa API, el juego vuelve a pedir pantalla completa y muestra un aviso
+pulsable. Para salir realmente de pantalla completa, desactiva «PANTALLA COMPLETA»
+en Ajustes.
+
+En web, «Salir» (en el menú o en la pausa) oculta el lienzo y muestra una pantalla
+de despedida con «VOLVER A JUGAR» y un enlace a la página del juego. Así el juego
+no se queda congelado en el último frame dentro del iframe de itch.io. Los
+navegadores no permiten cerrar desde JavaScript una pestaña que no se abrió desde
+JavaScript, por eso se muestra esa pantalla en lugar de cerrar la pestaña.
 
 Si el navegador bloquea la cámara dentro del iframe de itch.io, abre el juego en una
 pestaña nueva desde el botón de pantalla completa o el enlace de la página.
@@ -254,7 +278,17 @@ godot --headless --path . pruebas/detector_test.tscn
 ```
 
 La prueba simula ausencia, entrada de teclado, pérdida de foco y apagado/reactivación
-de la cámara.
+de la cámara. `pruebas/camara_externa_test.tscn` comprueba, sin hardware, que la
+puntuación del backend Linux prefiere cámaras USB/externas sobre la integrada.
+
+### Pausa
+
+```bash
+godot --headless --path . pruebas/pausa_test.tscn
+```
+
+Comprueba que el menú de pausa incluye el botón «Salir» junto a «Reanudar»,
+«Opciones» e «Ir al menú».
 
 ### Mando
 
@@ -289,8 +323,9 @@ godot --headless --path . pruebas/intro_test.tscn
 ```
 
 Comprueba que la intro carga las 24 viñetas de `assets/intro/Historia_Mictlán`,
-que `Espacio`, `A` y `Enter` avanzan al siguiente panel y que `B` salta la intro
-completa sin que el botón `SALTAR INTRO` capture esas teclas.
+que `Espacio`, `A` y `Enter` avanzan al siguiente panel, que el botón táctil y el
+toque en la viñeta también avanzan, y que `B` salta la intro completa sin que los
+botones capturen esas teclas.
 
 ## Créditos
 

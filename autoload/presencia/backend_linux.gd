@@ -18,6 +18,7 @@ const DIFERENCIA_PIXEL := 20
 const CALENTAMIENTO_MS := 1500
 const ESPERA_FEED_MS := 5000
 const ESPERA_FRAME_MS := 3000
+const REINTENTO_SIN_FRAME_MS := 3000
 
 var _feed: CameraFeed
 var _textura: CameraTexture
@@ -38,6 +39,9 @@ var _ultimo_frame_ms := 0
 var _frames := 0
 var _cuadros_movimiento := 0
 var _cuadros_quieto := 0
+var _ultimo_frame_ok_ms := 0
+var _reconectando := false
+var _nombre_feed := ""
 
 
 func _ready() -> void:
@@ -73,7 +77,9 @@ func get_fps() -> float:
 
 
 func get_nombre() -> String:
-	return "Movimiento (CameraServer)"
+	if _nombre_feed.is_empty():
+		return "Movimiento (CameraServer)"
+	return "Movimiento (CameraServer) · %s" % _nombre_feed
 
 
 func probar_permiso() -> void:
@@ -115,6 +121,8 @@ func iniciar() -> void:
 	_inicio_captura_ms = Time.get_ticks_msec()
 	_ultima_captura_ms = 0
 	_ultimo_frame_ms = _inicio_captura_ms
+	_ultimo_frame_ok_ms = _inicio_captura_ms
+	_reconectando = false
 	_frames = 0
 	_fps = 0.0
 	_presencia = true
@@ -161,19 +169,28 @@ func _abrir_camara(_para_monitoreo: bool) -> bool:
 		CameraServer.monitoring_feeds = false
 		return false
 
+	var mejor_feed: CameraFeed = null
+	var mejor_puntos := -1000
 	var indice_formato := -1
 	for i in cantidad:
 		var feed := CameraServer.get_feed(i)
+		if feed == null:
+			continue
 		var formato := _elegir_formato(feed)
-		if formato >= 0:
-			_feed = feed
+		if formato < 0:
+			continue
+		var puntos := _puntuar_feed(feed, formato)
+		if puntos > mejor_puntos:
+			mejor_feed = feed
+			mejor_puntos = puntos
 			indice_formato = formato
-			break
 
-	if _feed == null:
+	if mejor_feed == null:
 		CameraServer.monitoring_feeds = false
 		return false
 
+	_feed = mejor_feed
+	_nombre_feed = str(_feed.get_name())
 	_feed.set_format(indice_formato, {})
 	_feed.set_active(true)
 
@@ -215,6 +232,7 @@ func _cerrar_camara() -> void:
 	_luma_anterior = 0.0
 	_cuadros_movimiento = 0
 	_cuadros_quieto = 0
+	_nombre_feed = ""
 
 	if _rect != null:
 		_rect.texture = null
@@ -248,6 +266,105 @@ func _elegir_formato(feed: CameraFeed) -> int:
 	return 0
 
 
+## Prioriza cámaras USB/externas sobre la cámara integrada del equipo.
+func _puntuar_feed(feed: CameraFeed, indice_formato: int) -> int:
+	var ancho := 0
+	var alto := 0
+	var texto_formato := ""
+	var formatos := feed.get_formats()
+	if indice_formato >= 0 and indice_formato < formatos.size():
+		var formato: Dictionary = formatos[indice_formato]
+		ancho = int(formato.get("width", 0))
+		alto = int(formato.get("height", 0))
+		texto_formato = str(formato.get("format", ""))
+
+	return puntuar_camara(
+		str(feed.get_name()),
+		feed.get_position(),
+		ancho,
+		alto,
+		texto_formato
+	)
+
+
+## Puntuación pura, también usada por las pruebas sin cámara real.
+func puntuar_camara(
+	nombre: String,
+	posicion: int,
+	ancho: int,
+	alto: int,
+	texto_formato: String
+) -> int:
+	var puntos := 0
+	var texto := nombre.to_lower()
+
+	if texto.contains("usb") \
+			or texto.contains("external") \
+			or texto.contains("externa") \
+			or texto.contains("webcam") \
+			or texto.contains("logitech") \
+			or texto.contains("capture") \
+			or texto.contains("hdmi"):
+		puntos += 100
+
+	if texto.contains("integr") \
+			or texto.contains("built") \
+			or texto.contains("internal") \
+			or texto.contains("facetime") \
+			or texto.contains("isight"):
+		puntos -= 60
+
+	# Las cámaras externas suelen aparecer sin posición declarada.
+	if posicion == CameraFeed.FEED_UNSPECIFIED:
+		puntos += 20
+	elif posicion == CameraFeed.FEED_FRONT:
+		puntos -= 10
+
+	if ancho >= 640 and alto >= 480:
+		puntos += 10
+	if texto_formato.contains("YUYV"):
+		puntos += 5
+
+	return puntos
+
+
+func _intentar_reconectar(ahora: int) -> void:
+	if not _activo or _reconectando:
+		return
+	if ahora - _ultimo_frame_ok_ms < REINTENTO_SIN_FRAME_MS:
+		return
+	_reconectar()
+
+
+func _reconectar() -> void:
+	_reconectando = true
+	var era_activo := _activo
+	# Mientras se busca de nuevo el feed no hay imagen: avisamos para que el
+	# detector no cuente esa espera como ausencia del jugador.
+	_estado = "solicitando"
+	_mensaje = "Buscando cámara de nuevo…"
+	estado_cambiado.emit(_estado, _mensaje)
+	var ok := await _abrir_camara(true)
+	_reconectando = false
+
+	if not era_activo or not ok:
+		_ultimo_frame_ok_ms = Time.get_ticks_msec()
+		return
+
+	_activo = true
+	set_process(true)
+	_inicio_captura_ms = Time.get_ticks_msec()
+	_ultimo_frame_ok_ms = _inicio_captura_ms
+	_ultima_captura_ms = 0
+	_frames = 0
+	_fps = 0.0
+	_cuadros_movimiento = 0
+	_cuadros_quieto = 0
+	_estado = "activo"
+	_mensaje = ""
+	estado_cambiado.emit(_estado, _mensaje)
+
+
 func _process(_delta: float) -> void:
 	var ahora := Time.get_ticks_msec()
 	if ahora - _ultima_captura_ms < INTERVALO_CAPTURA_MS:
@@ -255,13 +372,16 @@ func _process(_delta: float) -> void:
 	_ultima_captura_ms = ahora
 
 	if _textura == null:
+		_intentar_reconectar(ahora)
 		return
 
 	var inicio := Time.get_ticks_msec()
 	var imagen := _textura.get_image()
 	if imagen == null or imagen.is_empty():
+		_intentar_reconectar(ahora)
 		return
 
+	_ultimo_frame_ok_ms = ahora
 	imagen.convert(Image.FORMAT_RGBA8)
 	imagen.resize(ANCHO_MUESTRA, ALTO_MUESTRA, Image.INTERPOLATE_BILINEAR)
 	var datos := imagen.get_data()
