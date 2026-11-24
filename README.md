@@ -20,7 +20,7 @@ Prototipo jugable con:
 - Velas decorativas con brillo amarillo repartidas por todo el recorrido.
 - Flor de cempasúchil final y portal que se abre al recogerla, con pantalla
   de final y vuelta al menú.
-- **Controles táctiles automáticos en móviles y tabletas**.
+- **Controles táctiles automáticos en móviles y tabletas**, con build APK para Android.
 - **Pausa automática por visión por computadora**: el juego detecta si sigues frente
   a la pantalla y se pausa solo cuando te alejas.
 
@@ -173,7 +173,7 @@ escenas/      Escenas .tscn y sus scripts .gd.
 autoload/     Singletons: estado de partida, configuración, salida, sonidos, música y detector de presencia.
 autoload/presencia/  Backends de cámara para web, Linux y plataformas sin cámara.
 web/          Detector JS, control de pantalla completa, salida web y MediaPipe para la exportación (ignorado por Godot).
-herramientas/ Script de exportación web y HTML de inclusión.
+herramientas/ Scripts de exportación web y Android, y HTML de inclusión.
 pruebas/      Escenas y backends falsos para probar controles, pausa, final y música.
 materiales/   Arte fuente editable (.ase, .psd, packs, fuentes completas).
 docs/         Créditos y documentación.
@@ -200,16 +200,18 @@ en `escenas/nivel_1.gd`.
 
 ## Exportación
 
-`export_presets.cfg` incluye tres presets:
+`export_presets.cfg` incluye cuatro presets:
 
 | Preset | Plataforma | Salida |
 | --- | --- | --- |
 | `Web` | HTML5 | `exports/web/index.html` |
 | `Windows` | Windows Desktop (x86_64) | `exports/windows/ElCaminoDeCempasuchil.exe` |
 | `Linux` | Linux (x86_64) | `exports/linux/ElCaminoDeCempasuchil.x86_64` |
+| `Android` | Android (ARM64 y ARMv7, desde API 24) | `exports/android/ElCaminoDeCempasuchil.apk` |
 
 Las exportaciones se generan en `exports/`, que está ignorada por git. Los builds
-publicados se suben a itch.io con `butler` en los canales `html5`, `windows` y `linux`.
+publicados se suben a itch.io con `butler` en los canales `html5`, `windows`, `linux`
+y `android`.
 
 Para la versión web, usa el script:
 
@@ -222,6 +224,21 @@ El script exporta el preset `Web` y copia `web/presencia_camara.js`,
 (runtime, modelo y licencia) junto a `index.html`. El modelo se carga de forma
 diferida la primera vez que se activa la cámara, así que el arranque del juego
 no se ve afectado.
+
+Para generar el APK de Android:
+
+```bash
+export GODOT_ANDROID_KEYSTORE_RELEASE_PATH=/home/andre/.android/cempasuchil-release.jks
+export GODOT_ANDROID_KEYSTORE_RELEASE_USER=cempasuchil
+export GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD=...
+./herramientas/exportar_android.sh
+```
+
+El script usa el preset `Android`, firma el APK con esa clave y lo deja en
+`exports/android/ElCaminoDeCempasuchil.apk`. La contraseña se pasa por variable de
+entorno y no se guarda en el repositorio. El paquete es
+`com.axiosrage.cempasuchil`, se instala desde Android 7.0 (API 24) y se ejecuta en
+horizontal con `arm64-v8a` y `armeabi-v7a`.
 
 En navegadores que lo permiten, `Esc` abre el menú sin sacar de pantalla completa:
 `pantalla_completa.js` usa Keyboard Lock para capturar la tecla. Si el navegador no
